@@ -2,6 +2,7 @@
 
 # Compiler
 CXX = clang++
+CXXFLAGS = -g -O0 $(LLVM_CFLAGS) -std=c++17
 LLVM_CONFIG = llvm-config
 LLC = llc  # LLVM static compiler
 OPT = opt  # LLVM optimizer

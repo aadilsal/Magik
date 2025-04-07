@@ -33,6 +33,14 @@
 \"[^"]*\"               {debugFlex(tok_string_literal); yylval.string_literal=strdup(yytext); return tok_string_literal;}
 \/\/.*                  {;}
 [ \n\r\t]               {;}
-"+"|"-"|"*"|"\/"|"="|";"|"("|")"|"{"|"}"|","|"<"|">"|"<="|">="|"=="|"!=" {debugFlex(yytext[0]); return yytext[0];} 
+"<="                    {debugFlex(tok_le); return tok_le;}
+">="                    {debugFlex(tok_ge); return tok_ge;}
+"=="                    {debugFlex(tok_eq); return tok_eq;}
+"!="                    {debugFlex(tok_ne); return tok_ne;}
+"+"|"-"|"*"|"/"         {debugFlex(yytext[0]); return yytext[0];}
+"="|";"|"("|")"|"{"|"}"|"," {debugFlex(yytext[0]); return yytext[0];}
+"<"                     {debugFlex(tok_lt); return tok_lt;}
+">"                     {debugFlex(tok_gt); return tok_gt;}
 .                       {debugFlex(-1); yyerror("illegal lexeme"); exit(EXIT_FAILURE);}
+
 %%

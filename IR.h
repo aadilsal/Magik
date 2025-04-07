@@ -9,6 +9,7 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
+#include "ssc.tab.h"
 
 using namespace llvm;
 
@@ -16,6 +17,7 @@ using namespace llvm;
 #define TYPE_INT 0
 #define TYPE_DOUBLE 1
 #define TYPE_VOID 2
+
 
 // Function declarations
 Value* getFromSymbolTable(const char *id);
@@ -29,14 +31,15 @@ static void initLLVM();
 void printLLVMIR();
 void addReturnInstr();
 Value* createDoubleConstant(double val);
-Value* createFunction(int returnType, const char* name, Value* params, Value* body);
+Value* createFunction(int returnType, const char* name, std::vector<llvm::Value*>* params, Value* body);
 Value* createParameter(int type, const char* name);
 void declareVariable(int type, const char* name);
 void declareAndAssignVariable(int type, const char* name, Value* value);
 void createIfStatement(Value* condition, Value* thenBlock, Value* elseBlock);
 void createForLoop(Value* init, Value* condition, Value* increment, Value* body);
 void createReturnStatement(Value* value);
-Value* createFunctionCall(const char* name, Value* args);
+Value* createFunctionCall(const char* name, std::vector<llvm::Value*>* args);
+
 
 // Global variables
 static std::map<std::string, Value *> SymbolTable;
@@ -60,7 +63,7 @@ static void initLLVM() {
 /**
 * Create a function with given return type, name, parameters and body
 */
-Value* createFunction(int returnType, const char* name, Value* params, Value* body) {
+Value* createFunction(int returnType, const char* name, std::vector<llvm::Value*>* params, Value* body) {
     // Determine return type
     Type *retType;
     switch(returnType) {
@@ -70,8 +73,16 @@ Value* createFunction(int returnType, const char* name, Value* params, Value* bo
         default: retType = builder.getVoidTy();
     }
     
-    // Create function type and function
-    FunctionType *funcType = FunctionType::get(retType, false);
+    // Create parameter types vector
+    std::vector<Type*> paramTypes;
+    if (params) {
+        for (auto param : *params) {
+            paramTypes.push_back(param->getType());
+        }
+    }
+    
+    // Create function type
+    FunctionType *funcType = FunctionType::get(retType, paramTypes, false);
     Function *func = Function::Create(funcType, Function::ExternalLinkage, name, module);
     
     // Add to function table
@@ -88,21 +99,33 @@ Value* createFunction(int returnType, const char* name, Value* params, Value* bo
     return func;
 }
 
-/**
-* Create a comparison operation
-*/
+Value* createFunctionCall(const char* name, std::vector<llvm::Value*>* args) {
+    Function *callee = FunctionTable[name];
+    if (!callee) {
+        yyerror("undefined function");
+        exit(EXIT_FAILURE);
+    }
+    
+    if (args) {
+        return builder.CreateCall(callee, *args, "calltmp");
+    } else {
+        return builder.CreateCall(callee, {}, "calltmp");
+    }
+}
+
+
+
 Value* createComparison(Value* lhs, Value* rhs, int op) {
     switch(op) {
         case '<': return builder.CreateFCmpULT(lhs, rhs, "cmplt");
         case '>': return builder.CreateFCmpUGT(lhs, rhs, "cmpgt");
-        case LE: return builder.CreateFCmpULE(lhs, rhs, "cmple");
-        case GE: return builder.CreateFCmpUGE(lhs, rhs, "cmpge");
-        case EQ: return builder.CreateFCmpUEQ(lhs, rhs, "cmpeq");
-        case NE: return builder.CreateFCmpUNE(lhs, rhs, "cmpne");
+        case tok_le: return builder.CreateFCmpULE(lhs, rhs, "cmple");
+        case tok_ge: return builder.CreateFCmpUGE(lhs, rhs, "cmpge");
+        case tok_eq: return builder.CreateFCmpUEQ(lhs, rhs, "cmpeq");
+        case tok_ne: return builder.CreateFCmpUNE(lhs, rhs, "cmpne");
         default: yyerror("invalid comparison operator"); exit(EXIT_FAILURE);
     }
 }
-
 /**
 * Create an if-else statement
 */
@@ -190,7 +213,7 @@ void createReturnStatement(Value* value) {
 /**
 * Create a function call
 */
-Value* createFunctionCall(const char* name, Value* args) {
+/**Value* createFunctionCall(const char* name, Value* args) {
     Function *callee = FunctionTable[name];
     if (!callee) {
         yyerror("undefined function");
@@ -200,3 +223,5 @@ Value* createFunctionCall(const char* name, Value* args) {
     // Handle arguments here (simplified)
     return builder.CreateCall(callee, {}, "calltmp");
 }
+*/
+
