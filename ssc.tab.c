@@ -73,6 +73,12 @@
     #include <stdlib.h>
     #include "IR.h"
     
+    
+    extern llvm::Function* mainFunction; 
+    extern void printfLLVM(const char* format, llvm::Value* value);
+    extern void printfLLVM(const char* format, const char* str);
+    
+    
     extern int yyparse();
     extern int yylex();
     extern FILE *yyin;
@@ -84,7 +90,7 @@
         #define debugBison(a)
     #endif
 
-#line 88 "ssc.tab.c"
+#line 94 "ssc.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -549,11 +555,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    58,    58,    59,    60,    61,    64,    68,    69,    70,
-      73,    76,    78,    82,    83,    84,    87,    88,    89,    90,
-      91,    94,    97,    98,   101,   102,   105,   107,   111,   115,
-     116,   119,   120,   121,   122,   123,   124,   125,   126,   127,
-     128,   129,   130,   133,   134,   135,   138,   139,   140
+       0,    64,    64,    65,    66,    67,    70,    74,    75,    76,
+      79,    82,    84,    88,    89,    90,    93,    94,    95,    96,
+      97,   100,   103,   104,   107,   108,   111,   113,   117,   121,
+     122,   125,   126,   127,   128,   129,   130,   131,   132,   133,
+     134,   135,   136,   139,   140,   141,   144,   145,   146
 };
 #endif
 
@@ -1198,223 +1204,223 @@ yyreduce:
   switch (yyn)
     {
   case 6: /* function: type_specifier tok_identifier '(' parameter_list ')' compound_statement  */
-#line 65 "ssc.y"
+#line 71 "ssc.y"
             { debugBison(20); (yyval.value) = createFunction((yyvsp[-5].type), (yyvsp[-4].identifier), (yyvsp[-2].param_list), (yyvsp[0].value)); free((yyvsp[-4].identifier)); }
-#line 1204 "ssc.tab.c"
-    break;
-
-  case 7: /* parameter_list: %empty  */
-#line 68 "ssc.y"
-                                          { debugBison(21); (yyval.param_list) = new std::vector<llvm::Value*>(); }
 #line 1210 "ssc.tab.c"
     break;
 
-  case 8: /* parameter_list: parameter  */
-#line 69 "ssc.y"
-                                          { debugBison(22); (yyval.param_list) = new std::vector<llvm::Value*>(); (yyval.param_list)->push_back((yyvsp[0].value)); }
+  case 7: /* parameter_list: %empty  */
+#line 74 "ssc.y"
+                                          { debugBison(21); (yyval.param_list) = new std::vector<llvm::Value*>(); }
 #line 1216 "ssc.tab.c"
     break;
 
-  case 9: /* parameter_list: parameter_list ',' parameter  */
-#line 70 "ssc.y"
-                                           { debugBison(23); (yyvsp[-2].param_list)->push_back((yyvsp[0].value)); (yyval.param_list) = (yyvsp[-2].param_list); }
+  case 8: /* parameter_list: parameter  */
+#line 75 "ssc.y"
+                                          { debugBison(22); (yyval.param_list) = new std::vector<llvm::Value*>(); (yyval.param_list)->push_back((yyvsp[0].value)); }
 #line 1222 "ssc.tab.c"
     break;
 
-  case 10: /* parameter: type_specifier tok_identifier  */
-#line 73 "ssc.y"
-                                           { debugBison(24); (yyval.value) = createParameter((yyvsp[-1].type), (yyvsp[0].identifier)); free((yyvsp[0].identifier)); }
+  case 9: /* parameter_list: parameter_list ',' parameter  */
+#line 76 "ssc.y"
+                                           { debugBison(23); (yyvsp[-2].param_list)->push_back((yyvsp[0].value)); (yyval.param_list) = (yyvsp[-2].param_list); }
 #line 1228 "ssc.tab.c"
     break;
 
-  case 11: /* declaration: type_specifier tok_identifier ';'  */
-#line 77 "ssc.y"
-            { debugBison(25); declareVariable((yyvsp[-2].type), (yyvsp[-1].identifier)); free((yyvsp[-1].identifier)); }
+  case 10: /* parameter: type_specifier tok_identifier  */
+#line 79 "ssc.y"
+                                           { debugBison(24); (yyval.value) = createParameter((yyvsp[-1].type), (yyvsp[0].identifier)); free((yyvsp[0].identifier)); }
 #line 1234 "ssc.tab.c"
     break;
 
-  case 12: /* declaration: type_specifier tok_identifier '=' expression ';'  */
-#line 79 "ssc.y"
-            { debugBison(26); declareAndAssignVariable((yyvsp[-4].type), (yyvsp[-3].identifier), (yyvsp[-1].value)); free((yyvsp[-3].identifier)); }
+  case 11: /* declaration: type_specifier tok_identifier ';'  */
+#line 83 "ssc.y"
+            { debugBison(25); declareVariable((yyvsp[-2].type), (yyvsp[-1].identifier)); free((yyvsp[-1].identifier)); }
 #line 1240 "ssc.tab.c"
     break;
 
-  case 13: /* type_specifier: tok_int  */
-#line 82 "ssc.y"
-                             { debugBison(27); (yyval.type) = TYPE_INT; }
+  case 12: /* declaration: type_specifier tok_identifier '=' expression ';'  */
+#line 85 "ssc.y"
+            { debugBison(26); declareAndAssignVariable((yyvsp[-4].type), (yyvsp[-3].identifier), (yyvsp[-1].value)); free((yyvsp[-3].identifier)); }
 #line 1246 "ssc.tab.c"
     break;
 
-  case 14: /* type_specifier: tok_double  */
-#line 83 "ssc.y"
-                             { debugBison(28); (yyval.type) = TYPE_DOUBLE; }
+  case 13: /* type_specifier: tok_int  */
+#line 88 "ssc.y"
+                             { debugBison(27); (yyval.type) = TYPE_INT; }
 #line 1252 "ssc.tab.c"
     break;
 
-  case 15: /* type_specifier: tok_void  */
-#line 84 "ssc.y"
-                             { debugBison(29); (yyval.type) = TYPE_VOID; }
+  case 14: /* type_specifier: tok_double  */
+#line 89 "ssc.y"
+                             { debugBison(28); (yyval.type) = TYPE_DOUBLE; }
 #line 1258 "ssc.tab.c"
     break;
 
-  case 21: /* compound_statement: '{' statement_list '}'  */
-#line 94 "ssc.y"
-                                           { debugBison(30); (yyval.value) = nullptr; }
+  case 15: /* type_specifier: tok_void  */
+#line 90 "ssc.y"
+                             { debugBison(29); (yyval.type) = TYPE_VOID; }
 #line 1264 "ssc.tab.c"
     break;
 
-  case 24: /* expression_statement: expression ';'  */
-#line 101 "ssc.y"
-                                     { debugBison(31); (yyval.value) = (yyvsp[-1].value); }
+  case 21: /* compound_statement: '{' statement_list '}'  */
+#line 100 "ssc.y"
+                                           { debugBison(30); (yyval.value) = nullptr; }
 #line 1270 "ssc.tab.c"
     break;
 
-  case 25: /* expression_statement: ';'  */
-#line 102 "ssc.y"
-                                     { debugBison(32); (yyval.value) = nullptr; }
+  case 24: /* expression_statement: expression ';'  */
+#line 107 "ssc.y"
+                                     { debugBison(31); (yyval.value) = (yyvsp[-1].value); }
 #line 1276 "ssc.tab.c"
     break;
 
-  case 26: /* selection_statement: tok_if '(' expression ')' statement  */
-#line 106 "ssc.y"
-                   { debugBison(33); createIfStatement((yyvsp[-2].value), (yyvsp[0].value), nullptr); (yyval.value) = (yyvsp[-2].value); }
+  case 25: /* expression_statement: ';'  */
+#line 108 "ssc.y"
+                                     { debugBison(32); (yyval.value) = nullptr; }
 #line 1282 "ssc.tab.c"
     break;
 
-  case 27: /* selection_statement: tok_if '(' expression ')' statement tok_else statement  */
-#line 108 "ssc.y"
-                   { debugBison(34); createIfStatement((yyvsp[-4].value), (yyvsp[-2].value), (yyvsp[0].value)); (yyval.value) = (yyvsp[-4].value); }
+  case 26: /* selection_statement: tok_if '(' expression ')' statement  */
+#line 112 "ssc.y"
+                   { debugBison(33); createIfStatement((yyvsp[-2].value), (yyvsp[0].value), nullptr); (yyval.value) = (yyvsp[-2].value); }
 #line 1288 "ssc.tab.c"
     break;
 
-  case 28: /* iteration_statement: tok_for '(' expression_statement expression_statement expression ')' statement  */
-#line 112 "ssc.y"
-                   { debugBison(35); createForLoop((yyvsp[-4].value), (yyvsp[-3].value), (yyvsp[-2].value), (yyvsp[0].value)); (yyval.value) = (yyvsp[-2].value); }
+  case 27: /* selection_statement: tok_if '(' expression ')' statement tok_else statement  */
+#line 114 "ssc.y"
+                   { debugBison(34); createIfStatement((yyvsp[-4].value), (yyvsp[-2].value), (yyvsp[0].value)); (yyval.value) = (yyvsp[-4].value); }
 #line 1294 "ssc.tab.c"
     break;
 
-  case 29: /* return_statement: tok_return ';'  */
-#line 115 "ssc.y"
-                                 { debugBison(36); createReturnStatement(nullptr); (yyval.value) = nullptr; }
+  case 28: /* iteration_statement: tok_for '(' expression_statement expression_statement expression ')' statement  */
+#line 118 "ssc.y"
+                   { debugBison(35); createForLoop((yyvsp[-4].value), (yyvsp[-3].value), (yyvsp[-2].value), (yyvsp[0].value)); (yyval.value) = (yyvsp[-2].value); }
 #line 1300 "ssc.tab.c"
     break;
 
-  case 30: /* return_statement: tok_return expression ';'  */
-#line 116 "ssc.y"
-                                            { debugBison(37); createReturnStatement((yyvsp[-1].value)); (yyval.value) = (yyvsp[-1].value); }
+  case 29: /* return_statement: tok_return ';'  */
+#line 121 "ssc.y"
+                                 { debugBison(36); createReturnStatement(nullptr); (yyval.value) = nullptr; }
 #line 1306 "ssc.tab.c"
     break;
 
-  case 31: /* expression: term  */
-#line 119 "ssc.y"
-                                          { debugBison(10); (yyval.value) = (yyvsp[0].value); }
+  case 30: /* return_statement: tok_return expression ';'  */
+#line 122 "ssc.y"
+                                            { debugBison(37); createReturnStatement((yyvsp[-1].value)); (yyval.value) = (yyvsp[-1].value); }
 #line 1312 "ssc.tab.c"
     break;
 
-  case 32: /* expression: expression '+' expression  */
-#line 120 "ssc.y"
-                                          { debugBison(11); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '+'); }
+  case 31: /* expression: term  */
+#line 125 "ssc.y"
+                                          { debugBison(10); (yyval.value) = (yyvsp[0].value); }
 #line 1318 "ssc.tab.c"
     break;
 
-  case 33: /* expression: expression '-' expression  */
-#line 121 "ssc.y"
-                                          { debugBison(12); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '-'); }
+  case 32: /* expression: expression '+' expression  */
+#line 126 "ssc.y"
+                                          { debugBison(11); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '+'); }
 #line 1324 "ssc.tab.c"
     break;
 
-  case 34: /* expression: expression '/' expression  */
-#line 122 "ssc.y"
-                                          { debugBison(13); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '/'); }
+  case 33: /* expression: expression '-' expression  */
+#line 127 "ssc.y"
+                                          { debugBison(12); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '-'); }
 #line 1330 "ssc.tab.c"
     break;
 
-  case 35: /* expression: expression '*' expression  */
-#line 123 "ssc.y"
-                                          { debugBison(14); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '*'); }
+  case 34: /* expression: expression '/' expression  */
+#line 128 "ssc.y"
+                                          { debugBison(13); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '/'); }
 #line 1336 "ssc.tab.c"
     break;
 
-  case 36: /* expression: expression tok_lt expression  */
-#line 124 "ssc.y"
-                                          { debugBison(38); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_lt); }
+  case 35: /* expression: expression '*' expression  */
+#line 129 "ssc.y"
+                                          { debugBison(14); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '*'); }
 #line 1342 "ssc.tab.c"
     break;
 
-  case 37: /* expression: expression tok_gt expression  */
-#line 125 "ssc.y"
-                                          { debugBison(39); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_gt); }
+  case 36: /* expression: expression tok_lt expression  */
+#line 130 "ssc.y"
+                                          { debugBison(38); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_lt); }
 #line 1348 "ssc.tab.c"
     break;
 
-  case 38: /* expression: expression tok_le expression  */
-#line 126 "ssc.y"
-                                          { debugBison(40); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_le); }
+  case 37: /* expression: expression tok_gt expression  */
+#line 131 "ssc.y"
+                                          { debugBison(39); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_gt); }
 #line 1354 "ssc.tab.c"
     break;
 
-  case 39: /* expression: expression tok_ge expression  */
-#line 127 "ssc.y"
-                                          { debugBison(41); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_ge); }
+  case 38: /* expression: expression tok_le expression  */
+#line 132 "ssc.y"
+                                          { debugBison(40); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_le); }
 #line 1360 "ssc.tab.c"
     break;
 
-  case 40: /* expression: expression tok_eq expression  */
-#line 128 "ssc.y"
-                                          { debugBison(42); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_eq); }
+  case 39: /* expression: expression tok_ge expression  */
+#line 133 "ssc.y"
+                                          { debugBison(41); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_ge); }
 #line 1366 "ssc.tab.c"
     break;
 
-  case 41: /* expression: expression tok_ne expression  */
-#line 129 "ssc.y"
-                                          { debugBison(43); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_ne); }
+  case 40: /* expression: expression tok_eq expression  */
+#line 134 "ssc.y"
+                                          { debugBison(42); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_eq); }
 #line 1372 "ssc.tab.c"
     break;
 
-  case 42: /* expression: '(' expression ')'  */
-#line 130 "ssc.y"
-                                          { debugBison(15); (yyval.value) = (yyvsp[-1].value); }
+  case 41: /* expression: expression tok_ne expression  */
+#line 135 "ssc.y"
+                                          { debugBison(43); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), tok_ne); }
 #line 1378 "ssc.tab.c"
     break;
 
-  case 43: /* term: tok_identifier  */
-#line 133 "ssc.y"
-                                         { debugBison(7); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); (yyval.value) = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free((yyvsp[0].identifier)); }
+  case 42: /* expression: '(' expression ')'  */
+#line 136 "ssc.y"
+                                          { debugBison(15); (yyval.value) = (yyvsp[-1].value); }
 #line 1384 "ssc.tab.c"
     break;
 
-  case 44: /* term: tok_double_literal  */
-#line 134 "ssc.y"
-                                         { debugBison(8); (yyval.value) = createDoubleConstant((yyvsp[0].double_literal)); }
+  case 43: /* term: tok_identifier  */
+#line 139 "ssc.y"
+                                         { debugBison(7); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); (yyval.value) = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free((yyvsp[0].identifier)); }
 #line 1390 "ssc.tab.c"
     break;
 
-  case 45: /* term: tok_identifier '(' argument_list ')'  */
-#line 135 "ssc.y"
-                                           { debugBison(44); (yyval.value) = createFunctionCall((yyvsp[-3].identifier), (yyvsp[-1].param_list)); free((yyvsp[-3].identifier)); }
+  case 44: /* term: tok_double_literal  */
+#line 140 "ssc.y"
+                                         { debugBison(8); (yyval.value) = createDoubleConstant((yyvsp[0].double_literal)); }
 #line 1396 "ssc.tab.c"
     break;
 
-  case 46: /* argument_list: %empty  */
-#line 138 "ssc.y"
-                                          { debugBison(45); (yyval.param_list) = new std::vector<llvm::Value*>(); }
+  case 45: /* term: tok_identifier '(' argument_list ')'  */
+#line 141 "ssc.y"
+                                           { debugBison(44); (yyval.value) = createFunctionCall((yyvsp[-3].identifier), (yyvsp[-1].param_list)); free((yyvsp[-3].identifier)); }
 #line 1402 "ssc.tab.c"
     break;
 
-  case 47: /* argument_list: expression  */
-#line 139 "ssc.y"
-                                          { debugBison(46); (yyval.param_list) = new std::vector<llvm::Value*>(); (yyval.param_list)->push_back((yyvsp[0].value)); }
+  case 46: /* argument_list: %empty  */
+#line 144 "ssc.y"
+                                          { debugBison(45); (yyval.param_list) = new std::vector<llvm::Value*>(); }
 #line 1408 "ssc.tab.c"
     break;
 
-  case 48: /* argument_list: argument_list ',' expression  */
-#line 140 "ssc.y"
-                                           { debugBison(47); (yyvsp[-2].param_list)->push_back((yyvsp[0].value)); (yyval.param_list) = (yyvsp[-2].param_list); }
+  case 47: /* argument_list: expression  */
+#line 145 "ssc.y"
+                                          { debugBison(46); (yyval.param_list) = new std::vector<llvm::Value*>(); (yyval.param_list)->push_back((yyvsp[0].value)); }
 #line 1414 "ssc.tab.c"
     break;
 
+  case 48: /* argument_list: argument_list ',' expression  */
+#line 146 "ssc.y"
+                                           { debugBison(47); (yyvsp[-2].param_list)->push_back((yyvsp[0].value)); (yyval.param_list) = (yyvsp[-2].param_list); }
+#line 1420 "ssc.tab.c"
+    break;
 
-#line 1418 "ssc.tab.c"
+
+#line 1424 "ssc.tab.c"
 
       default: break;
     }
@@ -1607,5 +1613,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 143 "ssc.y"
+#line 149 "ssc.y"
 

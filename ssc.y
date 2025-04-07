@@ -3,6 +3,12 @@
     #include <stdlib.h>
     #include "IR.h"
     
+    
+    extern llvm::Function* mainFunction; 
+    extern void printfLLVM(const char* format, llvm::Value* value);
+    extern void printfLLVM(const char* format, const char* str);
+    
+    
     extern int yyparse();
     extern int yylex();
     extern FILE *yyin;

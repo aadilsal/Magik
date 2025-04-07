@@ -10,7 +10,11 @@
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
 #include "ssc.tab.h"
+#include "llvm/IR/Type.h"
+#include "llvm/IR/DerivedTypes.h"
+
 extern FILE *yyin;  // Flex's input file pointer
+extern llvm::Function* mainFunction; 
 
 using namespace llvm;
 
@@ -21,6 +25,8 @@ using namespace llvm;
 
 
 // Function declarations
+void printfLLVM(const char* format, llvm::Value* value);
+void printfLLVM(const char* format, const char* str);
 Value* getFromSymbolTable(const char *id);
 void setDouble(const char *id, Value* value);
 void printString(const char *str);
@@ -61,11 +67,38 @@ static void initLLVM() {
     builder.SetInsertPoint(entry);
 }
 
-void printLLVMIR() {
-    if (module) {
-        module->print(llvm::errs(), nullptr);
-    }
+void printfLLVM(const char* format, llvm::Value* value) {
+    std::vector<llvm::Type*> printfArgs;
+    printfArgs.push_back(llvm::PointerType::get(llvm::Type::getInt8Ty(context), 0));
+    printfArgs.push_back(llvm::Type::getDoubleTy(context));
+    llvm::FunctionType* printfType = llvm::FunctionType::get(
+        llvm::Type::getInt32Ty(context), printfArgs, true);
+    
+    llvm::Function* printfFunc = llvm::Function::Create(
+        printfType, llvm::Function::ExternalLinkage, "printf", module);
+    
+    std::vector<llvm::Value*> args;
+    args.push_back(builder.CreateGlobalStringPtr(format));
+    args.push_back(value);
+    builder.CreateCall(printfFunc, args);
 }
+
+void printfLLVM(const char* format, const char* str) {
+    std::vector<llvm::Type*> printfArgs;
+    printfArgs.push_back(llvm::PointerType::get(llvm::Type::getInt8Ty(context), 0));
+    printfArgs.push_back(llvm::PointerType::get(llvm::Type::getInt8Ty(context), 0));
+    llvm::FunctionType* printfType = llvm::FunctionType::get(
+        llvm::Type::getInt32Ty(context), printfArgs, true);
+    
+    llvm::Function* printfFunc = llvm::Function::Create(
+        printfType, llvm::Function::ExternalLinkage, "printf", module);
+    
+    std::vector<llvm::Value*> args;
+    args.push_back(builder.CreateGlobalStringPtr(format));
+    args.push_back(builder.CreateGlobalStringPtr(str));
+    builder.CreateCall(printfFunc, args);
+}
+
 void addReturnInstr() {
     builder.CreateRet(ConstantInt::get(context, APInt(32, 0)));
 }
@@ -78,7 +111,7 @@ void printString(const char *str) {
 void printDouble(Value *value) {
     printfLLVM("%f\n", value);
 }
-
+/*
 void printfLLVM(const char *format, Value *inputValue) {
     Function *printfFunc = module->getFunction("printf");
     if(!printfFunc) {
@@ -89,7 +122,7 @@ void printfLLVM(const char *format, Value *inputValue) {
     Value *formatVal = builder.CreateGlobalStringPtr(format);
     builder.CreateCall(printfFunc, {formatVal, inputValue}, "printfCall");
 }
-
+*/
 Value* createFunction(int returnType, const char* name, std::vector<llvm::Value*>* params, Value* body) {
     // Determine return type
     Type *retType;
