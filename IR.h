@@ -14,7 +14,7 @@
 #include "llvm/IR/DerivedTypes.h"
 
 extern FILE *yyin;  // Flex's input file pointer
-extern llvm::Function* mainFunction; 
+static llvm::Function* mainFunction = nullptr;
 
 using namespace llvm;
 
@@ -323,6 +323,12 @@ Value* performBinaryOperation(Value* lhs, Value* rhs, int op) {
 // Constant creation
 Value* createDoubleConstant(double val) {
     return ConstantFP::get(context, APFloat(val));
+}
+
+void printLLVMIR() {
+    if (module) {
+        module->print(llvm::outs(), nullptr);
+    }
 }
 
 int main(int argc, char** argv) {
