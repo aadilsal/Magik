@@ -1,70 +1,34 @@
-// Variable declarations and arithmetic operations
-a = 5.9 + 1.3;
+function main() {
+    double a, b, d, e, i;
 
-// Print statements
-prints("a = ");
-printd(a);
+    a = 5.9 + 1.3;
+    prints("a = ");
+    printd(a);
 
-b = 7 + 5;
-prints("b = 7 + 5 = ");
-printd(b);
+    b = 7 + 5;
+    prints("b = 7 + 5 = ");
+    printd(b);
 
-d = b + 9;
-prints("d = 12 + 9 = ");
-printd(d);
+    d = b + 9;
+    prints("d = 12 + 9 = ");
+    printd(d);
 
-e = b * a / (b - 3);
-prints("e = b * a / (b - 3) = ");
-printd(e);
+    e = b * a / (b - 3);
+    prints("e = b * a / (b - 3) = ");
+    printd(e);
 
-// New if-else conditional
-if (e > 10) {
-    prints("e is greater than 10");
-} else {
-    prints("e is less than or equal to 10");
-}
-
-// New for loop
-prints("\nCounting from 1 to 5:");
-for (i = 1; i <= 5; i = i + 1) {
-    prints(" ");
-    printd(i);
-}
-
-// New function definition and call
-double square(double x) {
-    return x * x;
-}
-
-prints("\n\nSquare of 4: ");
-printd(square(4));
-
-// More complex example combining all features
-double calculate(double x, double y) {
-    double result = 0;
-    
-    if (x > y) {
-        result = x * x - y * y;
+    if (e > 10) {
+        prints("e is greater than 10");
     } else {
-        result = y * y - x * x;
+        prints("e is less than or equal to 10");
     }
-    
-    for (i = 1; i <= 3; i = i + 1) {
-        result = result + i;
+
+    prints("Counting from 1 to 5:");
+    for (i = 1; i <= 5; i = i + 1) {
+        prints(" ");
+        printd(i);
     }
-    
-    return result;
+
+    prints("Done!");
 }
 
-prints("\n\nCalculate(5, 3): ");
-printd(calculate(5, 3));
-
-prints("\nCalculate(2, 4): ");
-printd(calculate(2, 4));
-
-// Final result
-prints("\n\nFinal values:");
-prints("\na = "); printd(a);
-prints("\nb = "); printd(b);
-prints("\nd = "); printd(d);
-prints("\ne = "); printd(e);

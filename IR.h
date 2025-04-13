@@ -61,10 +61,10 @@ static BasicBlock *currentBlock = nullptr;
 
 static void initLLVM() {
     module = new Module("top", context);
-    FunctionType *mainTy = FunctionType::get(builder.getInt32Ty(), false);
-    mainFunction = Function::Create(mainTy, Function::ExternalLinkage, "main", module);
-    BasicBlock *entry = BasicBlock::Create(context, "entry", mainFunction);
-    builder.SetInsertPoint(entry);
+    // FunctionType *mainTy = FunctionType::get(builder.getInt32Ty(), false);
+   // mainFunction = Function::Create(mainTy, Function::ExternalLinkage, "main", module);
+   // BasicBlock *entry = BasicBlock::Create(context, "entry", mainFunction);
+   // builder.SetInsertPoint(entry);
 }
 
 void printfLLVM(const char* format, llvm::Value* value) {
@@ -129,7 +129,7 @@ Value* createFunction(int returnType, const char* name, std::vector<llvm::Value*
     switch(returnType) {
         case TYPE_INT: retType = builder.getInt32Ty(); break;
         case TYPE_DOUBLE: retType = builder.getDoubleTy(); break;
-        case TYPE_VOID: retType = builder.getVoidTy(); break;
+        case TYPE_VOID: 
         default: retType = builder.getVoidTy();
     }
     

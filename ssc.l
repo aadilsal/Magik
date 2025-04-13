@@ -41,6 +41,7 @@
 "="|";"|"("|")"|"{"|"}"|"," {debugFlex(yytext[0]); return yytext[0];}
 "<"                     {debugFlex(tok_lt); return tok_lt;}
 ">"                     {debugFlex(tok_gt); return tok_gt;}
+"function"              {debugFlex(tok_function); return tok_function;}
 .                       {debugFlex(-1); yyerror("illegal lexeme"); exit(EXIT_FAILURE);}
 
 %%

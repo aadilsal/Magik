@@ -46,6 +46,7 @@
 %token tok_ge    // >=
 %token tok_eq    // ==
 %token tok_ne    // !=
+%token tok_function
 
 %token <identifier> tok_identifier
 %token <double_literal> tok_double_literal
@@ -66,9 +67,9 @@ program:    /* empty */
             | program declaration
             | program statement
             ;
-
 function:   type_specifier tok_identifier '(' parameter_list ')' compound_statement
             { debugBison(20); $$ = createFunction($1, $2, $4, $6); free($2); }
+            | tok_identifier '(' parameter_list ')' compound_statement
             ;
 
 parameter_list: /* empty */               { debugBison(21); $$ = new std::vector<llvm::Value*>(); }
@@ -89,12 +90,13 @@ type_specifier: tok_int      { debugBison(27); $$ = TYPE_INT; }
               | tok_double   { debugBison(28); $$ = TYPE_DOUBLE; }
               | tok_void     { debugBison(29); $$ = TYPE_VOID; }
               ;
-
 statement:   compound_statement
             | expression_statement
             | selection_statement
             | iteration_statement
             | return_statement
+            | tok_prints '(' tok_string_literal ')' ';' { printString($3); free($3); }
+            | tok_printd '(' expression ')' ';' { printDouble($3); }
             ;
 
 compound_statement: '{' statement_list '}' { debugBison(30); $$ = nullptr; }
