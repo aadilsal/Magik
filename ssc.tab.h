@@ -64,16 +64,14 @@ extern int yydebug;
     tok_double = 265,              /* tok_double  */
     tok_void = 266,                /* tok_void  */
     IFX = 267,                     /* IFX  */
-    tok_lt = 268,                  /* tok_lt  */
-    tok_gt = 269,                  /* tok_gt  */
-    tok_le = 270,                  /* tok_le  */
-    tok_ge = 271,                  /* tok_ge  */
-    tok_eq = 272,                  /* tok_eq  */
-    tok_ne = 273,                  /* tok_ne  */
-    tok_function = 274,            /* tok_function  */
-    tok_identifier = 275,          /* tok_identifier  */
-    tok_double_literal = 276,      /* tok_double_literal  */
-    tok_string_literal = 277       /* tok_string_literal  */
+    tok_le = 268,                  /* tok_le  */
+    tok_ge = 269,                  /* tok_ge  */
+    tok_eq = 270,                  /* tok_eq  */
+    tok_ne = 271,                  /* tok_ne  */
+    tok_function = 272,            /* tok_function  */
+    tok_identifier = 273,          /* tok_identifier  */
+    tok_double_literal = 274,      /* tok_double_literal  */
+    tok_string_literal = 275       /* tok_string_literal  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -91,7 +89,7 @@ union YYSTYPE
     int type;
     std::vector<llvm::Value*>* param_list;
 
-#line 95 "ssc.tab.h"
+#line 93 "ssc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

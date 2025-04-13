@@ -922,12 +922,12 @@ YY_RULE_SETUP
 case 21:
 YY_RULE_SETUP
 #line 42 "ssc.l"
-{debugFlex(tok_lt); return tok_lt;}
+{debugFlex('<'); return '<';}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 43 "ssc.l"
-{debugFlex(tok_gt); return tok_gt;}
+{debugFlex('>'); return '>';}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP

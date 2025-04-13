@@ -40,8 +40,7 @@
 %token tok_double
 %token tok_void
 %token IFX
-%token tok_lt    // <
-%token tok_gt    // >
+
 %token tok_le    // <=
 %token tok_ge    // >=
 %token tok_eq    // ==
@@ -129,8 +128,8 @@ expression: term                          { debugBison(10); $$ = $1; }
           | expression '-' expression     { debugBison(12); $$ = performBinaryOperation($1, $3, '-'); }
           | expression '/' expression     { debugBison(13); $$ = performBinaryOperation($1, $3, '/'); }
           | expression '*' expression     { debugBison(14); $$ = performBinaryOperation($1, $3, '*'); }
-          | expression tok_lt expression  { debugBison(38); $$ = createComparison($1, $3, tok_lt); }
-          | expression tok_gt expression  { debugBison(39); $$ = createComparison($1, $3, tok_gt); }
+          | expression '<' expression     { debugBison(38); $$ = createComparison($1, $3, '<'); }
+          | expression '>' expression     { debugBison(39); $$ = createComparison($1, $3, '>'); }
           | expression tok_le expression  { debugBison(40); $$ = createComparison($1, $3, tok_le); }
           | expression tok_ge expression  { debugBison(41); $$ = createComparison($1, $3, tok_ge); }
           | expression tok_eq expression  { debugBison(42); $$ = createComparison($1, $3, tok_eq); }
