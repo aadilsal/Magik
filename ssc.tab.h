@@ -58,6 +58,7 @@ extern int yydebug;
     tok_prints = 259,              /* tok_prints  */
     tok_if = 260,                  /* tok_if  */
     tok_else = 261,                /* tok_else  */
+<<<<<<< HEAD
     tok_for = 262,                 /* tok_for  */
     tok_return = 263,              /* tok_return  */
     tok_int = 264,                 /* tok_int  */
@@ -72,6 +73,14 @@ extern int yydebug;
     tok_identifier = 273,          /* tok_identifier  */
     tok_double_literal = 274,      /* tok_double_literal  */
     tok_string_literal = 275       /* tok_string_literal  */
+=======
+    tok_relop = 262,               /* tok_relop  */
+    tok_identifier = 263,          /* tok_identifier  */
+    tok_double_literal = 264,      /* tok_double_literal  */
+    tok_string_literal = 265,      /* tok_string_literal  */
+    tok_and = 266,                 /* tok_and  */
+    tok_or = 267                   /* tok_or  */
+>>>>>>> master
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -80,16 +89,27 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
+<<<<<<< HEAD
 #line 24 "ssc.y"
+=======
+#line 18 "ssc.y"
+>>>>>>> master
 
     char *identifier;
     double double_literal;
     char *string_literal;
+<<<<<<< HEAD
     llvm::Value* value; 
     int type;
     std::vector<llvm::Value*>* param_list;
 
 #line 93 "ssc.tab.h"
+=======
+    char *op;
+    llvm::Value* value; 
+
+#line 84 "ssc.tab.h"
+>>>>>>> master
 
 };
 typedef union YYSTYPE YYSTYPE;

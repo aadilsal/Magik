@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function main() {
     double a, b, d, e, i;
 
@@ -32,3 +33,47 @@ function main() {
     prints("Done!");
 }
 
+=======
+// Basic variable assignments and prints
+a = 7.2;
+prints("a =");
+printd(a);
+
+// Simple if statement
+if (a > 5.0) {
+    prints("a is greater than 5");
+}
+
+// If-else statement
+b = 7 + 5;
+if (b < 10) {
+    prints("b is less than 10");
+} else {
+    prints("b is 10 or greater");
+}
+
+// Nested if-else
+d = b + 9;
+if (d > 20) {
+    prints("d is greater than 20");
+} else if (d > 15) {
+    prints("d is between 15 and 20");
+} else {
+    prints("d is 15 or less");
+}
+
+// Complex expression in condition
+e = b * a / (b - 3);
+if (e > 10.0 && e < 20.0) {
+    prints("e is between 10 and 20");
+} else {
+    prints("e is outside 10-20 range");
+}
+
+// Print final values
+prints("Final values:");
+prints("a ="); printd(a);
+prints("b ="); printd(b);
+prints("d ="); printd(d);
+prints("e ="); printd(e);
+>>>>>>> master
