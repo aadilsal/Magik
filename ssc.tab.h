@@ -54,33 +54,17 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    tok_printd = 258,              /* tok_printd  */
-    tok_prints = 259,              /* tok_prints  */
-    tok_if = 260,                  /* tok_if  */
-    tok_else = 261,                /* tok_else  */
-<<<<<<< HEAD
-    tok_for = 262,                 /* tok_for  */
-    tok_return = 263,              /* tok_return  */
-    tok_int = 264,                 /* tok_int  */
-    tok_double = 265,              /* tok_double  */
-    tok_void = 266,                /* tok_void  */
-    IFX = 267,                     /* IFX  */
-    tok_le = 268,                  /* tok_le  */
-    tok_ge = 269,                  /* tok_ge  */
-    tok_eq = 270,                  /* tok_eq  */
-    tok_ne = 271,                  /* tok_ne  */
-    tok_function = 272,            /* tok_function  */
-    tok_identifier = 273,          /* tok_identifier  */
-    tok_double_literal = 274,      /* tok_double_literal  */
-    tok_string_literal = 275       /* tok_string_literal  */
-=======
-    tok_relop = 262,               /* tok_relop  */
-    tok_identifier = 263,          /* tok_identifier  */
-    tok_double_literal = 264,      /* tok_double_literal  */
-    tok_string_literal = 265,      /* tok_string_literal  */
-    tok_and = 266,                 /* tok_and  */
-    tok_or = 267                   /* tok_or  */
->>>>>>> master
+    tok_for = 258,                 /* tok_for  */
+    tok_if = 259,                  /* tok_if  */
+    tok_else = 260,                /* tok_else  */
+    tok_printd = 261,              /* tok_printd  */
+    tok_prints = 262,              /* tok_prints  */
+    tok_and = 263,                 /* tok_and  */
+    tok_or = 264,                  /* tok_or  */
+    tok_relop = 265,               /* tok_relop  */
+    tok_identifier = 266,          /* tok_identifier  */
+    tok_double_literal = 267,      /* tok_double_literal  */
+    tok_string_literal = 268       /* tok_string_literal  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -89,27 +73,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-<<<<<<< HEAD
-#line 24 "ssc.y"
-=======
 #line 18 "ssc.y"
->>>>>>> master
 
     char *identifier;
     double double_literal;
     char *string_literal;
-<<<<<<< HEAD
-    llvm::Value* value; 
-    int type;
-    std::vector<llvm::Value*>* param_list;
-
-#line 93 "ssc.tab.h"
-=======
     char *op;
     llvm::Value* value; 
 
-#line 84 "ssc.tab.h"
->>>>>>> master
+#line 85 "ssc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

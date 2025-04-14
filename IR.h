@@ -17,13 +17,15 @@ void printString(const char *str);
 void printDouble(Value* value);
 Value* performBinaryOperation(Value* lhs, Value* rhs, int op);
 Value* createComparison(Value* lhs, Value* rhs, const char *op);
-void handleIf(Value* cond, Value* thenVal);
-void handleIfElse(Value* cond, Value* thenVal, Value* elseVal);
+void handleIf(Value* cond);
+void handleIfElse(Value* cond);
+void handleForLoop(Value* init, Value* cond, Value* update);
 void yyerror(const char *err);
 static void initLLVM();
 void printLLVMIR();
 void addReturnInstr();
 Value* createDoubleConstant(double val);
+
 
 static std::map<std::string, Value *> SymbolTable;
 
@@ -68,22 +70,23 @@ Value* createComparison(Value* lhs, Value* rhs, const char *op) {
 }
 
 void handleIf(Value* cond) {
-    BasicBlock* thenBB = BasicBlock::Create(context, "then", mainFunction);
-    BasicBlock* mergeBB = BasicBlock::Create(context, "ifmerge", mainFunction);
+    BasicBlock* thenBB = BasicBlock::Create(context, "if.then", mainFunction);
+    BasicBlock* mergeBB = BasicBlock::Create(context, "if.merge", mainFunction);
     
     builder.CreateCondBr(cond, thenBB, mergeBB);
     
     builder.SetInsertPoint(thenBB);
-    
+   
     builder.CreateBr(mergeBB);
     
     builder.SetInsertPoint(mergeBB);
 }
 
+
 void handleIfElse(Value* cond) {
-    BasicBlock* thenBB = BasicBlock::Create(context, "then", mainFunction);
-    BasicBlock* elseBB = BasicBlock::Create(context, "else", mainFunction);
-    BasicBlock* mergeBB = BasicBlock::Create(context, "ifmerge", mainFunction);
+    BasicBlock* thenBB = BasicBlock::Create(context, "if.then", mainFunction);
+    BasicBlock* elseBB = BasicBlock::Create(context, "if.else", mainFunction);
+    BasicBlock* mergeBB = BasicBlock::Create(context, "if.merge", mainFunction);
     
     builder.CreateCondBr(cond, thenBB, elseBB);
     
@@ -98,20 +101,20 @@ void handleIfElse(Value* cond) {
     builder.SetInsertPoint(mergeBB);
 }
 
-void handleIfElseIf(Value* cond) {
-    BasicBlock* thenBB = BasicBlock::Create(context, "then", mainFunction);
-    BasicBlock* elseBB = BasicBlock::Create(context, "else", mainFunction);
-    BasicBlock* mergeBB = BasicBlock::Create(context, "ifmerge", mainFunction);
+// void handleIfElseIf(Value* cond) {
+//     BasicBlock* thenBB = BasicBlock::Create(context, "then", mainFunction);
+//     BasicBlock* elseBB = BasicBlock::Create(context, "else", mainFunction);
+//     BasicBlock* mergeBB = BasicBlock::Create(context, "ifmerge", mainFunction);
     
-    builder.CreateCondBr(cond, thenBB, elseBB);
+//     builder.CreateCondBr(cond, thenBB, elseBB);
     
-    builder.SetInsertPoint(thenBB);
-    // Then block code
-    builder.CreateBr(mergeBB);
+//     builder.SetInsertPoint(thenBB);
+//     // Then block code
+//     builder.CreateBr(mergeBB);
     
-    builder.SetInsertPoint(elseBB);
+//     builder.SetInsertPoint(elseBB);
     
-}
+// }
 void printLLVMIR() {
 	module->print(errs(), nullptr);
 }
@@ -123,6 +126,7 @@ Value* getFromSymbolTable(const char *id) {
 	} else {
 		Value* defaultValue = builder.CreateAlloca(builder.getDoubleTy(), nullptr, name);
 		SymbolTable[name] = defaultValue;
+        builder.CreateStore(ConstantFP::get(context, APFloat(0.0)), defaultValue);
 		return defaultValue;
 	}
 }
@@ -159,4 +163,33 @@ Value* performBinaryOperation(Value* lhs, Value* rhs, int op) {
 		case '/': return builder.CreateFDiv(lhs, rhs, "fdiv");
 		default: yyerror("illegal binary operation"); exit(EXIT_FAILURE);
 	}
+}
+
+void handleForLoop(Value* init, Value* cond, Value* update) {
+    BasicBlock* condBB = BasicBlock::Create(context, "for.cond", mainFunction);
+    BasicBlock* bodyBB = BasicBlock::Create(context, "for.body", mainFunction);
+    BasicBlock* updateBB = BasicBlock::Create(context, "for.update", mainFunction);
+    BasicBlock* endBB = BasicBlock::Create(context, "for.end", mainFunction);
+    
+    // Initialization (already done)
+    builder.CreateBr(condBB);
+    
+    // Condition
+    builder.SetInsertPoint(condBB);
+    Value* condValue = builder.CreateFCmpONE(cond, 
+        ConstantFP::get(context, APFloat(0.0)), "for.cond");
+    builder.CreateCondBr(condValue, bodyBB, endBB);
+    
+    // Body
+    builder.SetInsertPoint(bodyBB);
+    // Body code will be generated here
+    builder.CreateBr(updateBB);
+    
+    // Update
+    builder.SetInsertPoint(updateBB);
+    // Update code will be generated here
+    builder.CreateBr(condBB);
+    
+    // End
+    builder.SetInsertPoint(endBB);
 }

@@ -23,82 +23,73 @@
     llvm::Value* value; 
 }
 
-%token tok_printd
-%token tok_prints
+%token tok_for
 %token tok_if
 %token tok_else
+%token tok_printd
+%token tok_prints
+%token tok_and
+%token tok_or
 %token <op> tok_relop
 %token <identifier> tok_identifier
 %token <double_literal> tok_double_literal
 %token <string_literal> tok_string_literal
-%token tok_and
-%token tok_or
 
+%type <value> expr condition stmt block stmt_list
+%type <value> for_loop if_stmt
 
-%type <value> term expression condition
-%type <value> statement
-
-%left '+' '-' 
+%left '+' '-'
 %left '*' '/'
-%left '(' ')'
 %left tok_relop
+%left tok_and tok_or
 
-%start root
+%start program
 
 %%
 
-root: /* empty */                { debugBison(1); addReturnInstr(); }
-    | statement root             { debugBison(2); }
-    | error ';'                  { yyerrok; }  /* Error recovery */
+program: stmt_list { debugBison(1); addReturnInstr(); }
+       ;
+
+stmt_list: /* empty */
+         | stmt_list stmt { debugBison(2); }
+         ;
+
+stmt: expr ';' { debugBison(3); }
+    | print_stmt ';' { debugBison(4); }
+    | if_stmt { debugBison(5); }
+    | for_loop { debugBison(6); }
+    | block { debugBison(7); }
     ;
 
-statement:
-    prints                       { debugBison(3); }
-    | printd                     { debugBison(4); }
-    | assignment                 { debugBison(5); }
-    | if_else                    { debugBison(6); }
+print_stmt: tok_prints '(' tok_string_literal ')' { debugBison(8); printString($3); }
+          | tok_printd '(' expr ')' { debugBison(9); printDouble($3); }
+          ;
+
+block: '{' stmt_list '}' { debugBison(10); }
+     ;
+
+if_stmt: tok_if '(' condition ')' stmt { debugBison(11); handleIf($3); }
+       | tok_if '(' condition ')' stmt tok_else stmt { debugBison(12); handleIfElse($3); }
+       ;
+
+for_loop: tok_for '(' expr ';' condition ';' expr ')' stmt { debugBison(13); handleForLoop($3, $5, $7); }
+        ;
+
+expr: tok_identifier { debugBison(14); Value* ptr = getFromSymbolTable($1); $$ = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free($1); }
+    | tok_double_literal { debugBison(15); $$ = createDoubleConstant($1); }
+    | expr '+' expr { debugBison(16); $$ = performBinaryOperation($1, $3, '+'); }
+    | expr '-' expr { debugBison(17); $$ = performBinaryOperation($1, $3, '-'); }
+    | expr '*' expr { debugBison(18); $$ = performBinaryOperation($1, $3, '*'); }
+    | expr '/' expr { debugBison(19); $$ = performBinaryOperation($1, $3, '/'); }
+    | tok_identifier '=' expr { debugBison(20); setDouble($1, $3); free($1); $$ = $3; }
+    | '(' expr ')' { debugBison(21); $$ = $2; }
     ;
 
-prints: tok_prints '(' tok_string_literal ')' ';'   { debugBison(7); printString($3); } 
-    ;
-
-printd: tok_printd '(' term ')' ';'        { debugBison(8); printDouble($3); }
-    ;
-
-term: tok_identifier               { debugBison(9); Value* ptr = getFromSymbolTable($1); $$ = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free($1); }
-    | tok_double_literal           { debugBison(10); $$ = createDoubleConstant($1); }
-    ;
-
-assignment: tok_identifier '=' expression ';'   { debugBison(11); setDouble($1, $3); free($1); }
-    ;
-
-expression: term                    { debugBison(12); $$ = $1; }
-    | expression '+' expression     { debugBison(13); $$ = performBinaryOperation($1, $3, '+'); }
-    | expression '-' expression     { debugBison(14); $$ = performBinaryOperation($1, $3, '-'); }
-    | expression '/' expression     { debugBison(15); $$ = performBinaryOperation($1, $3, '/'); }
-    | expression '*' expression     { debugBison(16); $$ = performBinaryOperation($1, $3, '*'); }
-    | '(' expression ')'            { debugBison(17); $$ = $2; }
-    ;
-
-condition: 
-    expression tok_relop expression 
-    { debugBison(18); $$ = createComparison($1, $3, $2); }
-    | condition tok_and condition 
-    { debugBison(22); $$ = builder.CreateAnd($1, $3, "logical_and"); }
-    | condition tok_or condition 
-    { debugBison(23); $$ = builder.CreateOr($1, $3, "logical_or"); }
-    | '(' condition ')' 
-    { debugBison(24); $$ = $2; }
-    ;
-	
-if_else: 
-    tok_if '(' condition ')' '{' root '}' 
-    { debugBison(19); handleIf($3); }
-    | tok_if '(' condition ')' '{' root '}' tok_else '{' root '}' 
-    { debugBison(20); handleIfElse($3); }
-    | tok_if '(' condition ')' '{' root '}' tok_else if_else 
-    { debugBison(21); handleIfElseIf($3); }
-    ;
+condition: expr tok_relop expr { debugBison(22); $$ = createComparison($1, $3, $2); }
+         | condition tok_and condition { debugBison(23); $$ = builder.CreateAnd($1, $3, "logical_and"); }
+         | condition tok_or condition { debugBison(24); $$ = builder.CreateOr($1, $3, "logical_or"); }
+         | '(' condition ')' { debugBison(25); $$ = $2; }
+         ;
 
 %%
 
