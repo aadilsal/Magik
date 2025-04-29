@@ -1,0 +1,13 @@
+@ This is a comment line
+
+summon power
+cast when power == 5
+{
+    reveal **Power is five**
+}
+else
+{
+    reveal **Power is not five**
+}
+
+
