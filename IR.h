@@ -19,7 +19,7 @@ Value* performBinaryOperation(Value* lhs, Value* rhs, int op);
 Value* createComparison(Value* lhs, Value* rhs, const char *op);
 void handleIf(Value* cond);
 void handleIfElse(Value* cond);
-void handleForLoop(Value* init, Value* cond, Value* update);
+void handleForLoop(Value* startVal, Value* endVal, Value* loopVarPtr);
 void yyerror(const char *err);
 static void initLLVM();
 void printLLVMIR();
@@ -165,31 +165,55 @@ Value* performBinaryOperation(Value* lhs, Value* rhs, int op) {
 	}
 }
 
-void handleForLoop(Value* init, Value* cond, Value* update) {
-    BasicBlock* condBB = BasicBlock::Create(context, "for.cond", mainFunction);
-    BasicBlock* bodyBB = BasicBlock::Create(context, "for.body", mainFunction);
-    BasicBlock* updateBB = BasicBlock::Create(context, "for.update", mainFunction);
-    BasicBlock* endBB = BasicBlock::Create(context, "for.end", mainFunction);
+// void handleForLoop(Value* init, Value* cond, Value* update) {
+//     BasicBlock* condBB = BasicBlock::Create(context, "for.cond", mainFunction);
+//     BasicBlock* bodyBB = BasicBlock::Create(context, "for.body", mainFunction);
+//     BasicBlock* updateBB = BasicBlock::Create(context, "for.update", mainFunction);
+//     BasicBlock* endBB = BasicBlock::Create(context, "for.end", mainFunction);
     
-    // Initialization (already done)
-    builder.CreateBr(condBB);
+//     // Initialization (already done)
+//     builder.CreateBr(condBB);
     
-    // Condition
-    builder.SetInsertPoint(condBB);
-    Value* condValue = builder.CreateFCmpONE(cond, 
-        ConstantFP::get(context, APFloat(0.0)), "for.cond");
-    builder.CreateCondBr(condValue, bodyBB, endBB);
+//     // Condition
+//     builder.SetInsertPoint(condBB);
+//     Value* condValue = builder.CreateFCmpONE(cond, 
+//         ConstantFP::get(context, APFloat(0.0)), "for.cond");
+//     builder.CreateCondBr(condValue, bodyBB, endBB);
     
-    // Body
-    builder.SetInsertPoint(bodyBB);
-    // Body code will be generated here
-    builder.CreateBr(updateBB);
+//     // Body
+//     builder.SetInsertPoint(bodyBB);
+//     // Body code will be generated here
+//     builder.CreateBr(updateBB);
     
-    // Update
-    builder.SetInsertPoint(updateBB);
-    // Update code will be generated here
-    builder.CreateBr(condBB);
+//     // Update
+//     builder.SetInsertPoint(updateBB);
+//     // Update code will be generated here
+//     builder.CreateBr(condBB);
     
-    // End
-    builder.SetInsertPoint(endBB);
+//     // End
+//     builder.SetInsertPoint(endBB);
+// }
+
+void handleForLoop(Value* startVal, Value* endVal, Value* loopVarPtr) {
+    // Store initial value
+    builder.CreateStore(startVal, loopVarPtr);
+
+    BasicBlock* loopBB = BasicBlock::Create(context, "loop", mainFunction);
+    BasicBlock* afterBB = BasicBlock::Create(context, "after_loop", mainFunction);
+
+    builder.CreateBr(loopBB);
+    builder.SetInsertPoint(loopBB);
+
+    // Load current value
+    Value* curVal = builder.CreateLoad(builder.getDoubleTy(), loopVarPtr);
+    
+    // Compare condition (e.g., i < endVal)
+    Value* cond = builder.CreateFCmpOLT(curVal, endVal, "loopcond");
+    builder.CreateCondBr(cond, loopBB, afterBB);
+
+    // Update step (i = i + 1)
+    Value* step = builder.CreateFAdd(curVal, ConstantFP::get(context, APFloat(1.0)), "step");
+    builder.CreateStore(step, loopVarPtr);
+
+    builder.SetInsertPoint(afterBB);
 }

@@ -7,7 +7,7 @@ LLC = llc  # LLVM static compiler
 OPT = opt  # LLVM optimizer
 
 # Files
-LEXER = ssc.l
+LEXER = mgk.l
 PARSER = ssc.y
 EXECUTABLE = ssc_compiler
 TEST_FILE = input.ssc

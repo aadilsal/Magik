@@ -1,13 +1,8 @@
-@ This is a comment line
+summon total = 0;       @ Use '=' instead of ':' for initialization
 
-summon power
-cast when power == 5
-{
-    reveal **Power is five**
-}
-else
-{
-    reveal **Power is not five**
+whirl i from 1...10 {   @ For loop
+    total = total + i;  @ Use '=' for assignment
 }
 
-
+reveal* total *;        @ Output variable
+reveal** Done! **;      @ Output text

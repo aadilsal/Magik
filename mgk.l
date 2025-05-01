@@ -23,6 +23,10 @@
 "cast"                  { debugFlex(tok_cast); return tok_cast; }  // Cast for if-else condition
 "when"                  { debugFlex(tok_when); return tok_when; }  // For conditional expression
 
+":"                     { return ':'; }  
+"..."                   { return tok_dotdot; }
+"from"                  { return tok_from; }
+
 \*\*[^*]*\*\*   { 
     char* raw = strdup(yytext + 2);  // Skip **
     raw[strlen(raw) - 2] = '\0';      // Remove ending **
@@ -46,7 +50,7 @@
 "&&"                   { debugFlex(tok_and); return tok_and; }
 "||"                   { debugFlex(tok_or); return tok_or; }
 
-"\bwhirl\b"                { debugFlex(tok_whirl); return tok_whirl; }  // whirl for loop
+"\<whirl\>"                { debugFlex(tok_whirl); return tok_whirl; }  // whirl for loop
 
 
 "+"|"-"|"*"|"/"|"="|";"|"("|")"|"{"|"}" { debugFlex(yytext[0]); return yytext[0]; }

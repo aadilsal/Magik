@@ -54,17 +54,21 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    tok_for = 258,                 /* tok_for  */
-    tok_if = 259,                  /* tok_if  */
-    tok_else = 260,                /* tok_else  */
-    tok_printd = 261,              /* tok_printd  */
-    tok_prints = 262,              /* tok_prints  */
-    tok_and = 263,                 /* tok_and  */
-    tok_or = 264,                  /* tok_or  */
-    tok_relop = 265,               /* tok_relop  */
-    tok_identifier = 266,          /* tok_identifier  */
-    tok_double_literal = 267,      /* tok_double_literal  */
-    tok_string_literal = 268       /* tok_string_literal  */
+    tok_reveal = 258,              /* tok_reveal  */
+    tok_summon = 259,              /* tok_summon  */
+    tok_cast = 260,                /* tok_cast  */
+    tok_when = 261,                /* tok_when  */
+    tok_whirl = 262,               /* tok_whirl  */
+    tok_else = 263,                /* tok_else  */
+    tok_var_output = 264,          /* tok_var_output  */
+    tok_from = 265,                /* tok_from  */
+    tok_dotdot = 266,              /* tok_dotdot  */
+    tok_relop = 267,               /* tok_relop  */
+    tok_identifier = 268,          /* tok_identifier  */
+    tok_double_literal = 269,      /* tok_double_literal  */
+    tok_string_literal = 270,      /* tok_string_literal  */
+    tok_and = 271,                 /* tok_and  */
+    tok_or = 272                   /* tok_or  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,15 +77,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "ssc.y"
+#line 21 "ssc.y"
 
     char *identifier;
     double double_literal;
     char *string_literal;
     char *op;
-    llvm::Value* value; 
+    llvm::Value* value;
 
-#line 85 "ssc.tab.h"
+#line 89 "ssc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
