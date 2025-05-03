@@ -84,7 +84,7 @@
         #define debugBison(a)
     #endif
 
-#line 88 "ssc.tab.c"
+#line 88 "mgk.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -107,7 +107,7 @@
 #  endif
 # endif
 
-#include "ssc.tab.h"
+#include "mgk.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1153,49 +1153,49 @@ yyreduce:
   case 2: /* program: stmt_list  */
 #line 53 "mgk.y"
                    { debugBison(1); addReturnInstr(); }
-#line 1157 "ssc.tab.c"
+#line 1157 "mgk.tab.c"
     break;
 
   case 4: /* stmt_list: stmt_list stmt  */
 #line 57 "mgk.y"
                           { debugBison(2); }
-#line 1163 "ssc.tab.c"
+#line 1163 "mgk.tab.c"
     break;
 
   case 5: /* stmt: expr ';'  */
 #line 60 "mgk.y"
                { debugBison(3); }
-#line 1169 "ssc.tab.c"
+#line 1169 "mgk.tab.c"
     break;
 
   case 6: /* stmt: reveal_stmt ';'  */
 #line 61 "mgk.y"
                       { debugBison(4); }
-#line 1175 "ssc.tab.c"
+#line 1175 "mgk.tab.c"
     break;
 
   case 7: /* stmt: if_stmt  */
 #line 62 "mgk.y"
               { debugBison(5); }
-#line 1181 "ssc.tab.c"
+#line 1181 "mgk.tab.c"
     break;
 
   case 8: /* stmt: for_loop  */
 #line 63 "mgk.y"
                { debugBison(6); }
-#line 1187 "ssc.tab.c"
+#line 1187 "mgk.tab.c"
     break;
 
   case 9: /* stmt: block  */
 #line 64 "mgk.y"
             { debugBison(7); }
-#line 1193 "ssc.tab.c"
+#line 1193 "mgk.tab.c"
     break;
 
   case 10: /* stmt: decl_stmt  */
 #line 65 "mgk.y"
                 {debugBison(28);}
-#line 1199 "ssc.tab.c"
+#line 1199 "mgk.tab.c"
     break;
 
   case 11: /* decl_stmt: tok_summon tok_identifier ';'  */
@@ -1205,7 +1205,7 @@ yyreduce:
     declareVariable((yyvsp[-1].identifier));
     free((yyvsp[-1].identifier));
 }
-#line 1209 "ssc.tab.c"
+#line 1209 "mgk.tab.c"
     break;
 
   case 12: /* decl_stmt: tok_summon tok_identifier tok_colon expr ';'  */
@@ -1216,119 +1216,119 @@ yyreduce:
     setDouble((yyvsp[-3].identifier),(yyvsp[-1].value));
     free((yyvsp[-3].identifier));
 }
-#line 1220 "ssc.tab.c"
+#line 1220 "mgk.tab.c"
     break;
 
   case 13: /* reveal_stmt: tok_reveal_var  */
 #line 81 "mgk.y"
                    { debugBison(30); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); Value* val = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_reveal"); printDouble(val); free((yyvsp[0].identifier)); }
-#line 1226 "ssc.tab.c"
+#line 1226 "mgk.tab.c"
     break;
 
   case 14: /* reveal_stmt: tok_reveal_str  */
 #line 82 "mgk.y"
                      { debugBison(31); printString((yyvsp[0].string_literal)); free((yyvsp[0].string_literal)); }
-#line 1232 "ssc.tab.c"
+#line 1232 "mgk.tab.c"
     break;
 
   case 15: /* block: '{' stmt_list '}'  */
 #line 85 "mgk.y"
                          { debugBison(10); }
-#line 1238 "ssc.tab.c"
+#line 1238 "mgk.tab.c"
     break;
 
   case 16: /* if_stmt: tok_cast tok_when '(' condition ')' stmt  */
 #line 89 "mgk.y"
                                              { debugBison(11); handleIf((yyvsp[-2].value)); }
-#line 1244 "ssc.tab.c"
+#line 1244 "mgk.tab.c"
     break;
 
   case 17: /* if_stmt: tok_cast tok_when '(' condition ')' stmt tok_otherwise stmt  */
 #line 90 "mgk.y"
                                                                   { debugBison(12); handleIfElse((yyvsp[-4].value)); }
-#line 1250 "ssc.tab.c"
+#line 1250 "mgk.tab.c"
     break;
 
   case 18: /* for_loop: tok_for '(' expr ';' condition ';' expr ')' stmt  */
 #line 93 "mgk.y"
                                                            { debugBison(13); handleForLoop((yyvsp[-6].value), (yyvsp[-4].value), (yyvsp[-2].value)); }
-#line 1256 "ssc.tab.c"
+#line 1256 "mgk.tab.c"
     break;
 
   case 19: /* expr: tok_identifier  */
 #line 96 "mgk.y"
                      { debugBison(14); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); (yyval.value) = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free((yyvsp[0].identifier)); }
-#line 1262 "ssc.tab.c"
+#line 1262 "mgk.tab.c"
     break;
 
   case 20: /* expr: tok_double_literal  */
 #line 97 "mgk.y"
                          { debugBison(15); (yyval.value) = createDoubleConstant((yyvsp[0].double_literal)); }
-#line 1268 "ssc.tab.c"
+#line 1268 "mgk.tab.c"
     break;
 
   case 21: /* expr: expr '+' expr  */
 #line 98 "mgk.y"
                     { debugBison(16); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '+'); }
-#line 1274 "ssc.tab.c"
+#line 1274 "mgk.tab.c"
     break;
 
   case 22: /* expr: expr '-' expr  */
 #line 99 "mgk.y"
                     { debugBison(17); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '-'); }
-#line 1280 "ssc.tab.c"
+#line 1280 "mgk.tab.c"
     break;
 
   case 23: /* expr: expr '*' expr  */
 #line 100 "mgk.y"
                     { debugBison(18); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '*'); }
-#line 1286 "ssc.tab.c"
+#line 1286 "mgk.tab.c"
     break;
 
   case 24: /* expr: expr '/' expr  */
 #line 101 "mgk.y"
                     { debugBison(19); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '/'); }
-#line 1292 "ssc.tab.c"
+#line 1292 "mgk.tab.c"
     break;
 
   case 25: /* expr: tok_identifier tok_colon expr  */
 #line 102 "mgk.y"
                                     { debugBison(20); setDouble((yyvsp[-2].identifier), (yyvsp[0].value)); free((yyvsp[-2].identifier)); (yyval.value) = (yyvsp[0].value); }
-#line 1298 "ssc.tab.c"
+#line 1298 "mgk.tab.c"
     break;
 
   case 26: /* expr: '(' expr ')'  */
 #line 103 "mgk.y"
                    { debugBison(21); (yyval.value) = (yyvsp[-1].value); }
-#line 1304 "ssc.tab.c"
+#line 1304 "mgk.tab.c"
     break;
 
   case 27: /* condition: expr tok_relop expr  */
 #line 106 "mgk.y"
                                { debugBison(22); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), (yyvsp[-1].op)); }
-#line 1310 "ssc.tab.c"
+#line 1310 "mgk.tab.c"
     break;
 
   case 28: /* condition: condition tok_and condition  */
 #line 107 "mgk.y"
                                        { debugBison(23); (yyval.value) = builder.CreateAnd((yyvsp[-2].value), (yyvsp[0].value), "logical_and"); }
-#line 1316 "ssc.tab.c"
+#line 1316 "mgk.tab.c"
     break;
 
   case 29: /* condition: condition tok_or condition  */
 #line 108 "mgk.y"
                                       { debugBison(24); (yyval.value) = builder.CreateOr((yyvsp[-2].value), (yyvsp[0].value), "logical_or"); }
-#line 1322 "ssc.tab.c"
+#line 1322 "mgk.tab.c"
     break;
 
   case 30: /* condition: '(' condition ')'  */
 #line 109 "mgk.y"
                              { debugBison(25); (yyval.value) = (yyvsp[-1].value); }
-#line 1328 "ssc.tab.c"
+#line 1328 "mgk.tab.c"
     break;
 
 
-#line 1332 "ssc.tab.c"
+#line 1332 "mgk.tab.c"
 
       default: break;
     }
