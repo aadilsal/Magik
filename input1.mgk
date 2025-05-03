@@ -1,0 +1,6 @@
+summon sum: 10;
+cast when (sum > 5) {
+    reveal**Sum is greater than 5**;
+} otherwise {
+    reveal**Sum is 5 or less**;
+}

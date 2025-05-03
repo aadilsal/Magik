@@ -19,13 +19,14 @@ Value* performBinaryOperation(Value* lhs, Value* rhs, int op);
 Value* createComparison(Value* lhs, Value* rhs, const char *op);
 void handleIf(Value* cond);
 void handleIfElse(Value* cond);
+void handleIfElseIf(Value* cond, std::pair<Value*, Value*>* elseIfs, Value* elseBlock);
 void handleForLoop(Value* init, Value* cond, Value* update);
 void yyerror(const char *err);
 static void initLLVM();
 void printLLVMIR();
 void addReturnInstr();
 Value* createDoubleConstant(double val);
-
+void declareVariable(const char *id);
 
 static std::map<std::string, Value *> SymbolTable;
 
@@ -42,6 +43,17 @@ static void initLLVM() {
 	builder.SetInsertPoint(entry);
 }
 
+
+void declareVariable(const char *id){
+    std::string name(id);
+    if (SymbolTable.find(name) != SymbolTable.end()) {
+        yyerror("Variable redeclared");
+        exit(EXIT_FAILURE);
+    }
+    Value* ptr = builder.CreateAlloca(builder.getDoubleTy(), nullptr, name);
+    SymbolTable[name] = ptr;
+    builder.CreateStore(ConstantFP::get(context, APFloat(0.0)), ptr);
+}
 void addReturnInstr() {
 	builder.CreateRet(ConstantInt::get(context, APInt(32, 0)));
 }
@@ -101,6 +113,45 @@ void handleIfElse(Value* cond) {
     builder.SetInsertPoint(mergeBB);
 }
 
+// void handleIfElseIf(Value* cond, std::vector<std::pair<Value*, Value*>>* elseIfs, Value* elseBlock) {
+//     BasicBlock* thenBB = BasicBlock::Create(context, "if.then", mainFunction);
+//     BasicBlock* currentElseBB = BasicBlock::Create(context, "if.else", mainFunction);
+//     BasicBlock* mergeBB = BasicBlock::Create(context, "if.merge", mainFunction);
+    
+//     builder.CreateCondBr(cond, thenBB, currentElseBB);
+    
+//     // Handle 'then' block
+//     builder.SetInsertPoint(thenBB);
+//     // ... Generate code for 'then' ...
+//     builder.CreateBr(mergeBB);
+    
+//     // Handle else-if clauses
+//     builder.SetInsertPoint(currentElseBB);
+//     while (elseIfs != nullptr) {
+//         BasicBlock* elseIfBB = BasicBlock::Create(context, "if.elseif", mainFunction);
+//         builder.CreateCondBr(elseIfs->first, elseIfBB, currentElseBB);
+        
+//         builder.SetInsertPoint(elseIfBB);
+//         // ... Generate code for else-if ...
+//         builder.CreateBr(mergeBB);
+        
+//         currentElseBB = elseIfBB;
+//         elseIfs = elseIfs->second; // Assume linked list structure
+//     }
+    
+//     // Handle 'otherwise' block
+//     if (elseBlock != nullptr) {
+//         BasicBlock* otherwiseBB = BasicBlock::Create(context, "if.otherwise", mainFunction);
+//         builder.CreateBr(otherwiseBB);
+//         builder.SetInsertPoint(otherwiseBB);
+//         // ... Generate code for 'otherwise' ...
+//         builder.CreateBr(mergeBB);
+//     } else {
+//         builder.CreateBr(mergeBB);
+//     }
+    
+//     builder.SetInsertPoint(mergeBB);
+// }
 // void handleIfElseIf(Value* cond) {
 //     BasicBlock* thenBB = BasicBlock::Create(context, "then", mainFunction);
 //     BasicBlock* elseBB = BasicBlock::Create(context, "else", mainFunction);
@@ -120,15 +171,14 @@ void printLLVMIR() {
 }
 
 Value* getFromSymbolTable(const char *id) {
-	std::string name(id);
-	if(SymbolTable.find(name) != SymbolTable.end()) {
-		return SymbolTable[name];
-	} else {
-		Value* defaultValue = builder.CreateAlloca(builder.getDoubleTy(), nullptr, name);
-		SymbolTable[name] = defaultValue;
-        builder.CreateStore(ConstantFP::get(context, APFloat(0.0)), defaultValue);
-		return defaultValue;
-	}
+    std::string name(id);
+    auto it = SymbolTable.find(name);
+    if (it != SymbolTable.end()) {
+        return it->second;
+    } else {
+        yyerror("Variable not declared. Use 'summon' to declare.");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void setDouble(const char *id, Value* value) {

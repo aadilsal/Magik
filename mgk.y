@@ -23,14 +23,17 @@
     llvm::Value* value; 
 }
 
+%token tok_summon
+%token tok_colon
 %token tok_for
-%token tok_if
-%token tok_else
-%token tok_printd
-%token tok_prints
+%token tok_cast
+%token tok_when
+%token tok_otherwise
 %token tok_and
 %token tok_or
 %token <op> tok_relop
+%token <identifier> tok_reveal_var
+%token <string_literal> tok_reveal_str
 %token <identifier> tok_identifier
 %token <double_literal> tok_double_literal
 %token <string_literal> tok_string_literal
@@ -55,22 +58,37 @@ stmt_list: /* empty */
          ;
 
 stmt: expr ';' { debugBison(3); }
-    | print_stmt ';' { debugBison(4); }
+    | reveal_stmt ';' { debugBison(4); }
     | if_stmt { debugBison(5); }
     | for_loop { debugBison(6); }
     | block { debugBison(7); }
+    | decl_stmt {debugBison(28);}
     ;
 
-print_stmt: tok_prints '(' tok_string_literal ')' { debugBison(8); printString($3); }
-          | tok_printd '(' expr ')' { debugBison(9); printDouble($3); }
-          ;
+decl_stmt: tok_summon tok_identifier ';' {
+    debugBison(26);
+    declareVariable($2);
+    free($2);
+}
+| tok_summon tok_identifier tok_colon expr ';' {
+    debugBison(27);
+    declareVariable($2);
+    setDouble($2,$4);
+    free($2);
+}
+
+reveal_stmt: 
+    tok_reveal_var { debugBison(30); Value* ptr = getFromSymbolTable($1); Value* val = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_reveal"); printDouble(val); free($1); }
+    | tok_reveal_str { debugBison(31); printString($1); free($1); }
+    ;
 
 block: '{' stmt_list '}' { debugBison(10); }
      ;
 
-if_stmt: tok_if '(' condition ')' stmt { debugBison(11); handleIf($3); }
-       | tok_if '(' condition ')' stmt tok_else stmt { debugBison(12); handleIfElse($3); }
-       ;
+if_stmt: 
+    tok_cast tok_when '(' condition ')' stmt { debugBison(11); handleIf($4); }
+    | tok_cast tok_when '(' condition ')' stmt tok_otherwise stmt { debugBison(12); handleIfElse($4); }
+    ;
 
 for_loop: tok_for '(' expr ';' condition ';' expr ')' stmt { debugBison(13); handleForLoop($3, $5, $7); }
         ;
@@ -81,7 +99,7 @@ expr: tok_identifier { debugBison(14); Value* ptr = getFromSymbolTable($1); $$ =
     | expr '-' expr { debugBison(17); $$ = performBinaryOperation($1, $3, '-'); }
     | expr '*' expr { debugBison(18); $$ = performBinaryOperation($1, $3, '*'); }
     | expr '/' expr { debugBison(19); $$ = performBinaryOperation($1, $3, '/'); }
-    | tok_identifier '=' expr { debugBison(20); setDouble($1, $3); free($1); $$ = $3; }
+    | tok_identifier tok_colon expr { debugBison(20); setDouble($1, $3); free($1); $$ = $3; }
     | '(' expr ')' { debugBison(21); $$ = $2; }
     ;
 

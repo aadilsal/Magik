@@ -54,17 +54,20 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    tok_for = 258,                 /* tok_for  */
-    tok_if = 259,                  /* tok_if  */
-    tok_else = 260,                /* tok_else  */
-    tok_printd = 261,              /* tok_printd  */
-    tok_prints = 262,              /* tok_prints  */
-    tok_and = 263,                 /* tok_and  */
-    tok_or = 264,                  /* tok_or  */
-    tok_relop = 265,               /* tok_relop  */
-    tok_identifier = 266,          /* tok_identifier  */
-    tok_double_literal = 267,      /* tok_double_literal  */
-    tok_string_literal = 268       /* tok_string_literal  */
+    tok_summon = 258,              /* tok_summon  */
+    tok_colon = 259,               /* tok_colon  */
+    tok_for = 260,                 /* tok_for  */
+    tok_cast = 261,                /* tok_cast  */
+    tok_when = 262,                /* tok_when  */
+    tok_otherwise = 263,           /* tok_otherwise  */
+    tok_and = 264,                 /* tok_and  */
+    tok_or = 265,                  /* tok_or  */
+    tok_relop = 266,               /* tok_relop  */
+    tok_reveal_var = 267,          /* tok_reveal_var  */
+    tok_reveal_str = 268,          /* tok_reveal_str  */
+    tok_identifier = 269,          /* tok_identifier  */
+    tok_double_literal = 270,      /* tok_double_literal  */
+    tok_string_literal = 271       /* tok_string_literal  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,7 +76,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "ssc.y"
+#line 18 "mgk.y"
 
     char *identifier;
     double double_literal;
@@ -81,7 +84,7 @@ union YYSTYPE
     char *op;
     llvm::Value* value; 
 
-#line 85 "ssc.tab.h"
+#line 88 "ssc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
