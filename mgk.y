@@ -25,7 +25,9 @@
 
 %token tok_summon
 %token tok_colon
-%token tok_for
+%token tok_whirl
+%token tok_from
+%token tok_to
 %token tok_cast
 %token tok_when
 %token tok_otherwise
@@ -39,7 +41,7 @@
 %token <string_literal> tok_string_literal
 
 %type <value> expr condition stmt block stmt_list
-%type <value> for_loop if_stmt
+%type <value> whirl_loop if_stmt
 
 %left '+' '-'
 %left '*' '/'
@@ -60,7 +62,7 @@ stmt_list: /* empty */
 stmt: expr ';' { debugBison(3); }
     | reveal_stmt ';' { debugBison(4); }
     | if_stmt { debugBison(5); }
-    | for_loop { debugBison(6); }
+    | whirl_loop { debugBison(6); }
     | block { debugBison(7); }
     | decl_stmt {debugBison(28);}
     ;
@@ -90,8 +92,22 @@ if_stmt:
     | tok_cast tok_when '(' condition ')' stmt tok_otherwise stmt { debugBison(12); handleIfElse($4); }
     ;
 
-for_loop: tok_for '(' expr ';' condition ';' expr ')' stmt { debugBison(13); handleForLoop($3, $5, $7); }
-        ;
+whirl_loop: 
+    tok_whirl tok_identifier tok_from expr tok_to expr stmt { 
+        debugBison(13); 
+        // Initialize loop variable
+        setDouble($2, $4);
+        // Create condition: identifier <= end
+        Value* var = getFromSymbolTable($2);
+        Value* cond = createComparison(var, $6, "<=");
+        // Create update: identifier = identifier + 1
+        Value* one = createDoubleConstant(1.0);
+        Value* newVal = performBinaryOperation(var, one, '+');
+        setDouble($2, newVal);
+        // Handle loop structure
+        handleForLoop($4, cond, newVal);
+    }
+    ;
 
 expr: tok_identifier { debugBison(14); Value* ptr = getFromSymbolTable($1); $$ = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free($1); }
     | tok_double_literal { debugBison(15); $$ = createDoubleConstant($1); }

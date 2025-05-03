@@ -1,6 +1,6 @@
 %{
     #include <llvm/IR/Value.h>
-    #include "ssc.tab.h"
+    #include "mgk.tab.h"
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
@@ -19,10 +19,12 @@
 %%
 
 "summon"                { debugFlex(tok_summon); return tok_summon; }
-"for"                   { debugFlex(tok_for); return tok_for; }
 "cast"                  { debugFlex(tok_cast); return tok_cast;}
 "when"                  {debugFlex(tok_when); return tok_when;}
 "otherwise"             {debugFlex(tok_otherwise); return tok_otherwise;}
+"whirl"                 { debugFlex(tok_whirl); return tok_whirl; }
+"from"                  { debugFlex(tok_from); return tok_from; }
+"\.\.\."                { debugFlex(tok_to); return tok_to; }
 "reveal*"([^*]+)"*"     { debugFlex(tok_reveal_var); yylval.identifier=strndup(yytext+7,strlen(yytext)-8); return tok_reveal_var;}
 "reveal**"([^*]+)"**"     { 
     debugFlex(tok_reveal_str); 
@@ -38,7 +40,7 @@
 "||"                   { debugFlex(tok_or); return tok_or; }
 "+"|"-"|"*"|"/"|";"|"("|")"|"{"|"}" { debugFlex(yytext[0]); return yytext[0]; }
 [ \t\n]                { /* ignore whitespace */ }
-\/\/.*                 { /* ignore comments */ }
+"@"[^\n]*              { /* Ignore @ comments */ }
 .                      { char errmsg[100]; snprintf(errmsg, sizeof(errmsg), "Syntax error at line %d: unexpected character '%s'", yylineno, yytext); yyerror(errmsg); }
 
 %%

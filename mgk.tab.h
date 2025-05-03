@@ -56,18 +56,20 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     tok_summon = 258,              /* tok_summon  */
     tok_colon = 259,               /* tok_colon  */
-    tok_for = 260,                 /* tok_for  */
-    tok_cast = 261,                /* tok_cast  */
-    tok_when = 262,                /* tok_when  */
-    tok_otherwise = 263,           /* tok_otherwise  */
-    tok_and = 264,                 /* tok_and  */
-    tok_or = 265,                  /* tok_or  */
-    tok_relop = 266,               /* tok_relop  */
-    tok_reveal_var = 267,          /* tok_reveal_var  */
-    tok_reveal_str = 268,          /* tok_reveal_str  */
-    tok_identifier = 269,          /* tok_identifier  */
-    tok_double_literal = 270,      /* tok_double_literal  */
-    tok_string_literal = 271       /* tok_string_literal  */
+    tok_whirl = 260,               /* tok_whirl  */
+    tok_from = 261,                /* tok_from  */
+    tok_to = 262,                  /* tok_to  */
+    tok_cast = 263,                /* tok_cast  */
+    tok_when = 264,                /* tok_when  */
+    tok_otherwise = 265,           /* tok_otherwise  */
+    tok_and = 266,                 /* tok_and  */
+    tok_or = 267,                  /* tok_or  */
+    tok_relop = 268,               /* tok_relop  */
+    tok_reveal_var = 269,          /* tok_reveal_var  */
+    tok_reveal_str = 270,          /* tok_reveal_str  */
+    tok_identifier = 271,          /* tok_identifier  */
+    tok_double_literal = 272,      /* tok_double_literal  */
+    tok_string_literal = 273       /* tok_string_literal  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -84,7 +86,7 @@ union YYSTYPE
     char *op;
     llvm::Value* value; 
 
-#line 88 "mgk.tab.h"
+#line 90 "mgk.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
