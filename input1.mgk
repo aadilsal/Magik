@@ -1,8 +1,8 @@
 summon y: 10;
-cast when (y > 5) {
-    reveal**Y > 5**;
+cast when (y beyond 5) {
+    reveal**Y is beyond 5**;
 } otherwise {
-    reveal**Y <= 5**;
+    reveal**Y is notmore 5**;
 }
 
 summon i: 0;
