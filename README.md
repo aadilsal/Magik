@@ -30,10 +30,6 @@ Loops in Magik are represented by the whirl keyword, allowing you to iterate ove
 whirl i from 0...5:
   reveal(i)
 
-### Functions
-Functions in Magik are spells that you can conjure and unveil to return values:
-conjure double(x):
-  unveil x * 2
 
 ### Comments
 Comments in Magik are written as quiet whispers, indicated by ~~:

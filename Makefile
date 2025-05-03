@@ -45,7 +45,7 @@ $(PARSER_C) $(PARSER_H): $(PARSER)
 $(LEX_C): $(LEXER)
 	flex $(FLEX_FLAGS) -o $(LEX_C) $(LEXER)
 
-# Compile the SSC compiler with LLVM support
+# Compile the MGK compiler with LLVM support
 $(EXECUTABLE): $(LEX_C) $(PARSER_C)
 	$(CXX) $(LLVM_CXXFLAGS) -o $(EXECUTABLE) $(PARSER_C) $(LEX_C) $(LLVM_LDFLAGS) $(LLVM_LIBS)
 
@@ -74,13 +74,13 @@ $(OBJ_FILE): $(ASM_FILE)
 $(BIN_FILE): $(OBJ_FILE)
 	clang -o $(BIN_FILE) $(OBJ_FILE) -lc
 
-# Run the SSC compiler to generate IR, compile it, and run the executable
+# Run the MGK compiler to generate IR, compile it, and run the executable
 run: ir
 	llc -filetype=obj output.ll -o output.o
 	clang output.o -o mgk_compiler_ir -no-pie -lc
 	./mgk_compiler_ir
 
-# Run the SSC compiler with optimized IR
+# Run the MGK compiler with optimized IR
 run_opt: opt
 	llc -filetype=obj $(OPT_IR_FILE) -o output.o
 	clang output.o -o mgk_compiler_ir -no-pie -lc
