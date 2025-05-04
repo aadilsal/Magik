@@ -1,3 +1,8 @@
+Here’s a cleaned-up and properly formatted version of your `README.md` for **Magik** — now with consistent indentation and correct code block formatting so it looks great on GitHub:
+
+---
+
+````markdown
 # Magik Programming Language
 
 ## Introduction
@@ -17,35 +22,50 @@ Magik incorporates the core features of modern programming languages — but pre
 
 ### Variable Binding
 Use the `summon` keyword to declare and assign variables:
+```magik
 summon x = 10;
 summon y = 5.5;
-```
+````
 
 ### Output Spell
+
 To display output on the screen, you cast a `reveal` spell:
+
+```magik
 reveal** Magic activated! **
 ```
 
 ### Conditionals
+
 Magik uses the `cast when` keyword for conditional logic:
+
+```magik
 cast when myvariable > 30:
   reveal** Power surge! **
 ```
 
 ### Looping
+
 Loops in Magik are represented by the `whirl` keyword, allowing you to iterate over a range:
+
+```magik
 whirl i from 0...5:
   reveal*i*
 ```
 
 ### Comments
+
 Comments in Magik are written using `@`:
+
+```magik
 @ this is a comment
 ```
 
 ### Operations
 
 #### Arithmetic Operators
+
+```magik
 +    // addition  
 -    // subtraction  
 *    // multiplication  
@@ -53,6 +73,8 @@ Comments in Magik are written using `@`:
 ```
 
 #### Comparison Operators
+
+```magik
 is        // ==
 not       // !=
 beyond    // >
@@ -62,6 +84,8 @@ notmore   // <=
 ```
 
 #### Logical Operators
+
+```magik
 A   // logical AND  
 O   // logical OR  
 N   // logical NOT  
@@ -71,8 +95,9 @@ N   // logical NOT
 
 ## Conclusion
 
-**Magik** is more than just a programming language — it's an experience.  
+**Magik** is more than just a programming language — it's an experience.
 With simplicity, originality, and charm at its core, Magik provides a fresh perspective on how programming can be a **creative, magical journey**.
 
 > Join us in casting spells through code with **Magik**!
+
 
