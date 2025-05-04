@@ -96,4 +96,17 @@ With simplicity, originality, and charm at its core, Magik provides a fresh pers
 
 Join us in casting spells through code with **Magik**!
 
+#### TO RUN THE SAMPLE CODE AND WRITE YOUR OWN CODE IN MAGIK, PLEASE FOLLOW THESE STEPS:
+1- ensure the installation of flex/bison by "sudo apt-get update" 
+followed by 
+"sudo apt-get install flex bison llvm clang"
+
+2- clone this repository using "git clone https://github.com/aadilsal/Magik.git"
+
+3-"cd Magik" and type "make"
+
+4- type "./mgk_compiler input1.mgk"
+
+5- finally, type "make run"
+
 
