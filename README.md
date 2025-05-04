@@ -1,8 +1,4 @@
-Here’s a cleaned-up and properly formatted version of your `README.md` for **Magik** — now with consistent indentation and correct code block formatting so it looks great on GitHub:
 
----
-
-````markdown
 # Magik Programming Language
 
 ## Introduction
@@ -98,6 +94,6 @@ N   // logical NOT
 **Magik** is more than just a programming language — it's an experience.
 With simplicity, originality, and charm at its core, Magik provides a fresh perspective on how programming can be a **creative, magical journey**.
 
-> Join us in casting spells through code with **Magik**!
+Join us in casting spells through code with **Magik**!
 
 
