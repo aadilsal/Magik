@@ -35,6 +35,14 @@ static Module *module = nullptr;
 static IRBuilder<> builder(context);
 static Function *mainFunction = nullptr;
 
+BasicBlock* loopCondBB ;
+BasicBlock* loopBodyBB ;
+BasicBlock* loopIncBB ;
+BasicBlock* loopEndBB;
+BasicBlock *thenBB = nullptr;
+BasicBlock *elseBB = nullptr;
+BasicBlock *mergeBB = nullptr;
+
 static void initLLVM() {
 	module = new Module("top", context);
 	FunctionType *mainTy = FunctionType::get(builder.getInt32Ty(), false);

@@ -1,4 +1,6 @@
 %{
+    #include <llvm/IR/Value.h>
+    #include <llvm/IR/Type.h>
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -55,7 +57,7 @@
 program: stmt_list { debugBison(1); addReturnInstr(); }
        ;
 
-stmt_list: /* empty */
+stmt_list: /* empty */ { $$ = nullptr; };
          | stmt_list stmt { debugBison(2); }
          ;
 
@@ -87,27 +89,85 @@ reveal_stmt:
 block: '{' stmt_list '}' { debugBison(10); }
      ;
 
-if_stmt: 
-    tok_cast tok_when '(' condition ')' stmt { debugBison(11); handleIf($4); }
-    | tok_cast tok_when '(' condition ')' stmt tok_otherwise stmt { debugBison(12); handleIfElse($4); }
-    ;
+if_stmt:
+    tok_cast tok_when '(' condition ')' 
+   {
+        Function* func = builder.GetInsertBlock()->getParent();
+		Value* condVal = $4;
+		
+		thenBB = BasicBlock::Create(context, "then", func);
+        elseBB = BasicBlock::Create(context, "else", func);
+		mergeBB = BasicBlock::Create(context, "ifcont", func);
 
-whirl_loop: 
-    tok_whirl tok_identifier tok_from expr tok_to expr stmt { 
-        debugBison(13); 
-        // Initialize loop variable
-        setDouble($2, $4);
-        // Create condition: identifier <= end
-        Value* var = getFromSymbolTable($2);
-        Value* cond = createComparison(var, $6, "<=");
-        // Create update: identifier = identifier + 1
-        Value* one = createDoubleConstant(1.0);
-        Value* newVal = performBinaryOperation(var, one, '+');
-        setDouble($2, newVal);
-        // Handle loop structure
-        handleForLoop($4, cond, newVal);
+		builder.CreateCondBr(condVal, thenBB, elseBB);
+
+		builder.SetInsertPoint(thenBB);
+	}
+	'{' stmt_list '}' tok_otherwise
+	{
+		builder.CreateBr(mergeBB);
+		builder.SetInsertPoint(elseBB);
+	} 
+	'{' stmt_list '}'
+    {
+	    builder.CreateBr(mergeBB);
+        builder.SetInsertPoint(mergeBB);
     }
-    ;
+  ;
+
+
+whirl_loop:
+    tok_whirl tok_identifier tok_from tok_double_literal tok_to tok_double_literal 
+    {
+        debugBison(13);
+
+        Function* function = builder.GetInsertBlock()->getParent();
+
+        // Create and insert blocks directly into the function
+        loopCondBB = BasicBlock::Create(context, "loop.cond", function);
+        loopBodyBB = BasicBlock::Create(context, "loop.body", function);
+        loopIncBB  = BasicBlock::Create(context, "loop.inc", function);
+        loopEndBB  = BasicBlock::Create(context, "loop.end", function);
+
+        // 1. Initialize loop variable
+        setDouble($2, createDoubleConstant($4));
+        //Value* varPtr = getFromSymbolTable($2);
+
+        // Jump to condition check
+        builder.CreateBr(loopCondBB);
+
+        // 2. Condition check
+        builder.SetInsertPoint(loopCondBB);
+        Value* cPtr = getFromSymbolTable($2);
+        Value* cVal = builder.CreateLoad(Type::getDoubleTy(context), cPtr, $2);
+        Value* limit = createDoubleConstant($6);
+        Value* cond = builder.CreateFCmpULT(cVal, limit, "cmptmp");
+        builder.CreateCondBr(cond, loopBodyBB, loopEndBB);
+
+        // 3. Loop body
+        builder.SetInsertPoint(loopBodyBB);
+        
+    } stmt 
+    {
+
+        builder.CreateBr(loopIncBB);
+
+        // 4. Increment
+        builder.SetInsertPoint(loopIncBB);
+        Value* one = createDoubleConstant(1.0);
+        Value* ptr = getFromSymbolTable($2);
+        Value* val = builder.CreateLoad(Type::getDoubleTy(context), ptr, $2);
+        Value* inc = builder.CreateFAdd(val, one, "incr");
+        builder.CreateStore(inc, ptr);
+        builder.CreateBr(loopCondBB);
+
+        // 5. End of loop
+        builder.SetInsertPoint(loopEndBB);
+    }
+;
+
+
+
 
 expr: tok_identifier { debugBison(14); Value* ptr = getFromSymbolTable($1); $$ = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free($1); }
     | tok_double_literal { debugBison(15); $$ = createDoubleConstant($1); }
