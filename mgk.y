@@ -35,6 +35,7 @@
 %token tok_otherwise
 %token tok_and
 %token tok_or
+%token tok_not
 %token <op> tok_relop
 %token <identifier> tok_reveal_var
 %token <string_literal> tok_reveal_str
@@ -182,6 +183,7 @@ expr: tok_identifier { debugBison(14); Value* ptr = getFromSymbolTable($1); $$ =
 condition: expr tok_relop expr { debugBison(22); $$ = createComparison($1, $3, $2); }
          | condition tok_and condition { debugBison(23); $$ = builder.CreateAnd($1, $3, "logical_and"); }
          | condition tok_or condition { debugBison(24); $$ = builder.CreateOr($1, $3, "logical_or"); }
+         | tok_not condition {debugBison(26); $$=createLogicalNot($2);}
          | '(' condition ')' { debugBison(25); $$ = $2; }
          ;
 

@@ -27,6 +27,7 @@ void printLLVMIR();
 void addReturnInstr();
 Value* createDoubleConstant(double val);
 void declareVariable(const char *id);
+Value* createLogicalNot(Value* cond);
 
 static std::map<std::string, Value *> SymbolTable;
 
@@ -51,7 +52,9 @@ static void initLLVM() {
 	builder.SetInsertPoint(entry);
 }
 
-
+Value* createLogicalNot(Value* cond) {
+    return builder.CreateNot(cond, "logical_not");
+}
 void declareVariable(const char *id){
     std::string name(id);
     if (SymbolTable.find(name) != SymbolTable.end()) {

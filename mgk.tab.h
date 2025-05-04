@@ -64,12 +64,13 @@ extern int yydebug;
     tok_otherwise = 265,           /* tok_otherwise  */
     tok_and = 266,                 /* tok_and  */
     tok_or = 267,                  /* tok_or  */
-    tok_relop = 268,               /* tok_relop  */
-    tok_reveal_var = 269,          /* tok_reveal_var  */
-    tok_reveal_str = 270,          /* tok_reveal_str  */
-    tok_identifier = 271,          /* tok_identifier  */
-    tok_double_literal = 272,      /* tok_double_literal  */
-    tok_string_literal = 273       /* tok_string_literal  */
+    tok_not = 268,                 /* tok_not  */
+    tok_relop = 269,               /* tok_relop  */
+    tok_reveal_var = 270,          /* tok_reveal_var  */
+    tok_reveal_str = 271,          /* tok_reveal_str  */
+    tok_identifier = 272,          /* tok_identifier  */
+    tok_double_literal = 273,      /* tok_double_literal  */
+    tok_string_literal = 274       /* tok_string_literal  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -78,7 +79,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "mgk.y"
+#line 20 "mgk.y"
 
     char *identifier;
     double double_literal;
@@ -86,7 +87,7 @@ union YYSTYPE
     char *op;
     llvm::Value* value; 
 
-#line 90 "mgk.tab.h"
+#line 91 "mgk.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

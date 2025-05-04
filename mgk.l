@@ -37,14 +37,15 @@
     yylval.string_literal = strndup(yytext+8, strlen(yytext)-10);
     return tok_reveal_str; 
 }
+"A"                    { debugFlex(tok_and); return tok_and; }
+"O"                    { debugFlex(tok_or); return tok_or; }
+"N"                     {debugFlex(tok_not);return tok_not;}
 ":"                     { debugFlex(tok_colon); return tok_colon; }
 [a-zA-Z][a-zA-Z0-9_]*   { debugFlex(tok_identifier); yylval.identifier=strdup(yytext); return tok_identifier; }  // FIXED: Correct identifier rule
 [0-9]+(\.[0-9]+)?       { debugFlex(tok_double_literal); yylval.double_literal=atof(yytext); return tok_double_literal; }
 \"[^"]*\"               { debugFlex(tok_string_literal); yylval.string_literal=strdup(yytext); return tok_string_literal; }
-"&&"                    { debugFlex(tok_and); return tok_and; }
-"||"                    { debugFlex(tok_or); return tok_or; }
 "+"|"-"|"*"|"/"|";"|"("|")"|"{"|"}" { debugFlex(yytext[0]); return yytext[0]; }
-[ \t\n]                 { /* ignore whitespace */ }
+[ \t\n\r]                 { /* ignore whitespace */ }
 "@"[^\n]*               { /* Ignore @ comments */ }
 .                       { char errmsg[100]; snprintf(errmsg, sizeof(errmsg), "Syntax error at line %d: unexpected character '%s'", yylineno, yytext); yyerror(errmsg); }
 %%
