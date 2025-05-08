@@ -1,6 +1,7 @@
 #include <string>
 #include <map>
 #include <stdio.h>
+#include<vector>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/IRBuilder.h>
@@ -28,8 +29,11 @@ void addReturnInstr();
 Value* createDoubleConstant(double val);
 void declareVariable(const char *id);
 Value* createLogicalNot(Value* cond);
+void pushScope();
+void popScope();
 
-static std::map<std::string, Value *> SymbolTable;
+// static std::map<std::string, Value *> SymbolTable;
+static std::vector<std::map<std::string, Value *>> SymbolTableStack;
 
 static LLVMContext context;
 static Module *module = nullptr;
@@ -44,27 +48,70 @@ BasicBlock *thenBB = nullptr;
 BasicBlock *elseBB = nullptr;
 BasicBlock *mergeBB = nullptr;
 
+// static void initLLVM() {
+// 	module = new Module("top", context);
+// 	FunctionType *mainTy = FunctionType::get(builder.getInt32Ty(), false);
+// 	mainFunction = Function::Create(mainTy, Function::ExternalLinkage, "main", module);
+// 	BasicBlock *entry = BasicBlock::Create(context, "entry", mainFunction);
+// 	builder.SetInsertPoint(entry);
+// }
 static void initLLVM() {
-	module = new Module("top", context);
-	FunctionType *mainTy = FunctionType::get(builder.getInt32Ty(), false);
-	mainFunction = Function::Create(mainTy, Function::ExternalLinkage, "main", module);
-	BasicBlock *entry = BasicBlock::Create(context, "entry", mainFunction);
-	builder.SetInsertPoint(entry);
+    module = new Module("top", context);
+    FunctionType *mainTy = FunctionType::get(builder.getInt32Ty(), false);
+    mainFunction = Function::Create(mainTy, Function::ExternalLinkage, "main", module);
+    BasicBlock *entry = BasicBlock::Create(context, "entry", mainFunction);
+    builder.SetInsertPoint(entry);
+    pushScope();
+}
+
+void pushScope() {
+    SymbolTableStack.push_back(std::map<std::string, Value *>());
+}
+
+void popScope() {
+    SymbolTableStack.pop_back();
 }
 
 Value* createLogicalNot(Value* cond) {
     return builder.CreateNot(cond, "logical_not");
 }
-void declareVariable(const char *id){
+// void declareVariable(const char *id){
+//     std::string name(id);
+//     if (SymbolTable.find(name) != SymbolTable.end()) {
+//         yyerror("Variable redeclared");
+//         exit(EXIT_FAILURE);
+//     }
+//     Value* ptr = builder.CreateAlloca(builder.getDoubleTy(), nullptr, name);
+//     SymbolTable[name] = ptr;
+//     builder.CreateStore(ConstantFP::get(context, APFloat(0.0)), ptr);
+// }
+
+void declareVariable(const char *id) {
     std::string name(id);
-    if (SymbolTable.find(name) != SymbolTable.end()) {
-        yyerror("Variable redeclared");
+    // Check redeclaration in the current scope only
+    auto& currentScope = SymbolTableStack.back();
+    if (currentScope.find(name) != currentScope.end()) {
+        yyerror("Variable redeclared in the same scope");
         exit(EXIT_FAILURE);
     }
     Value* ptr = builder.CreateAlloca(builder.getDoubleTy(), nullptr, name);
-    SymbolTable[name] = ptr;
+    currentScope[name] = ptr;
     builder.CreateStore(ConstantFP::get(context, APFloat(0.0)), ptr);
 }
+
+Value* getFromSymbolTable(const char *id) {
+    std::string name(id);
+    // Search from innermost to outermost scope
+    for (auto it = SymbolTableStack.rbegin(); it != SymbolTableStack.rend(); ++it) {
+        auto& scope = *it;
+        if (scope.find(name) != scope.end()) {
+            return scope[name];
+        }
+    }
+    yyerror("Variable not declared. Use 'summon' to declare.");
+    exit(EXIT_FAILURE);
+}
+
 void addReturnInstr() {
 	builder.CreateRet(ConstantInt::get(context, APInt(32, 0)));
 }
@@ -181,16 +228,16 @@ void printLLVMIR() {
 	module->print(errs(), nullptr);
 }
 
-Value* getFromSymbolTable(const char *id) {
-    std::string name(id);
-    auto it = SymbolTable.find(name);
-    if (it != SymbolTable.end()) {
-        return it->second;
-    } else {
-        yyerror("Variable not declared. Use 'summon' to declare.");
-        exit(EXIT_FAILURE);
-    }
-}
+// Value* getFromSymbolTable(const char *id) {
+//     std::string name(id);
+//     auto it = SymbolTable.find(name);
+//     if (it != SymbolTable.end()) {
+//         return it->second;
+//     } else {
+//         yyerror("Variable not declared. Use 'summon' to declare.");
+//         exit(EXIT_FAILURE);
+//     }
+// }
 
 void setDouble(const char *id, Value* value) {
 	Value *ptr = getFromSymbolTable(id);

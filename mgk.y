@@ -87,7 +87,7 @@ reveal_stmt:
     | tok_reveal_str { debugBison(31); printString($1); free($1); }
     ;
 
-block: '{' stmt_list '}' { debugBison(10); }
+block: '{'{pushScope(); debugBison(10);} stmt_list '}' {popScope(); debugBison(11); }
      ;
 
 if_stmt:
@@ -147,6 +147,7 @@ whirl_loop:
 
         // 3. Loop body
         builder.SetInsertPoint(loopBodyBB);
+        pushScope();
         
     } stmt 
     {
@@ -164,6 +165,7 @@ whirl_loop:
 
         // 5. End of loop
         builder.SetInsertPoint(loopEndBB);
+        popScope();
     }
 ;
 

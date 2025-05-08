@@ -1,15 +1,43 @@
+reveal**BASIC ARITHMETIC AND VARIABLES**;
+summon a: 10;
+summon b: 5;
+a:a+b;
+reveal*a*;
+a:a-b;
+reveal*a*;
+a:a*b;
+reveal*a*;
+a:b/a;
+reveal*a*;
+
+reveal**IF-ELSE TESTING**;
 summon y: 10;
 cast when (y beyond 5) {
-    reveal**Y is beyond 5**;
+    reveal**Y is beyond 5**;  @ This should print
 } otherwise {
     reveal**Y is notmore 5**;
 }
 
-summon i: 0;
-whirl i from 0...5 {
-    reveal*i*;
+summon z: 3;
+cast when (z beneath 5 A z not 0) {
+    reveal**Z is between 0 and 5**;  @ This should print
+} otherwise {
+    reveal**Z is invalid**;
 }
 
-summon x: 10; @ Declare variable x
-x: 20;       @ Update value
-reveal*x*;   @ Print x
+reveal**FOR-LOOP AND SCOPING**;
+summon i: 0;
+whirl i from 0...3 {
+    summon i: 2;  @ Shadow outer i
+    reveal*i*;    @ Prints 2.0 each iteration
+}
+reveal*i*;  @ Prints 0.0 (outer scope restored)
+
+reveal**NESTED SCOPES**;
+summon outerVar: 100;
+{
+    summon outerVar: 200;  @ Shadow in inner scope
+    reveal*outerVar*;      @ 200.0
+}
+reveal*outerVar*;          @ 100.0
+

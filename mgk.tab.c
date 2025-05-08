@@ -150,13 +150,14 @@ enum yysymbol_kind_t
   YYSYMBOL_decl_stmt = 33,                 /* decl_stmt  */
   YYSYMBOL_reveal_stmt = 34,               /* reveal_stmt  */
   YYSYMBOL_block = 35,                     /* block  */
-  YYSYMBOL_if_stmt = 36,                   /* if_stmt  */
-  YYSYMBOL_37_1 = 37,                      /* $@1  */
+  YYSYMBOL_36_1 = 36,                      /* $@1  */
+  YYSYMBOL_if_stmt = 37,                   /* if_stmt  */
   YYSYMBOL_38_2 = 38,                      /* $@2  */
-  YYSYMBOL_whirl_loop = 39,                /* whirl_loop  */
-  YYSYMBOL_40_3 = 40,                      /* $@3  */
-  YYSYMBOL_expr = 41,                      /* expr  */
-  YYSYMBOL_condition = 42                  /* condition  */
+  YYSYMBOL_39_3 = 39,                      /* $@3  */
+  YYSYMBOL_whirl_loop = 40,                /* whirl_loop  */
+  YYSYMBOL_41_4 = 41,                      /* $@4  */
+  YYSYMBOL_expr = 42,                      /* expr  */
+  YYSYMBOL_condition = 43                  /* condition  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -484,16 +485,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   133
+#define YYLAST   138
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  29
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  33
+#define YYNRULES  34
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  74
+#define YYNSTATES  75
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   274
@@ -545,9 +546,9 @@ static const yytype_int8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    58,    58,    61,    62,    65,    66,    67,    68,    69,
-      70,    73,    78,    86,    87,    90,    95,   108,    94,   122,
-     121,   173,   174,   175,   176,   177,   178,   179,   180,   183,
-     184,   185,   186,   187
+      70,    73,    78,    86,    87,    90,    90,    95,   108,    94,
+     122,   121,   175,   176,   177,   178,   179,   180,   181,   182,
+     185,   186,   187,   188,   189
 };
 #endif
 
@@ -569,8 +570,8 @@ static const char *const yytname[] =
   "tok_reveal_var", "tok_reveal_str", "tok_identifier",
   "tok_double_literal", "tok_string_literal", "'+'", "'-'", "'*'", "'/'",
   "';'", "'{'", "'}'", "'('", "')'", "$accept", "program", "stmt_list",
-  "stmt", "decl_stmt", "reveal_stmt", "block", "if_stmt", "$@1", "$@2",
-  "whirl_loop", "$@3", "expr", "condition", YY_NULLPTR
+  "stmt", "decl_stmt", "reveal_stmt", "block", "$@1", "if_stmt", "$@2",
+  "$@3", "whirl_loop", "$@4", "expr", "condition", YY_NULLPTR
 };
 
 static const char *
@@ -580,7 +581,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-42)
+#define YYPACT_NINF (-25)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -594,14 +595,14 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -42,     3,    79,   -42,     7,    13,    28,   -42,   -42,     8,
-     -42,   -42,    50,   -42,   -42,    -8,   -42,   -42,   -42,   100,
-      -3,    26,    15,    50,    23,    91,   -42,    50,    50,    50,
-      50,   -42,    50,   -42,    29,    16,   110,   -42,   -42,   -14,
-     -14,   -42,   -42,   105,    45,    16,    16,    69,    -5,   -42,
-      37,    74,    87,    -1,    50,    16,    16,   -42,   -42,   -42,
-     110,   -42,   -42,    33,    79,   -42,   -42,    48,    51,   -42,
-      53,   -42,    54,   -42
+     -25,     5,    83,   -25,    11,    16,     6,   -25,   -25,    33,
+     -25,   -25,     9,   -25,   -25,    17,   -25,   -25,   -25,   109,
+      -2,    41,    22,     9,   -25,   100,   -25,     9,     9,     9,
+       9,   -25,     9,   -25,    37,    12,   -12,    35,   -25,    -9,
+      -9,   -25,   -25,   114,    56,    12,    12,    95,    -8,   -25,
+     -25,    39,    20,    91,    -5,     9,    12,    12,   -25,   -25,
+     -25,   -12,   -25,   -25,    40,    83,   -25,   -25,    51,    48,
+     -25,    46,   -25,    67,   -25
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -609,28 +610,28 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       3,     0,     2,     1,     0,     0,     0,    13,    14,    21,
-      22,     3,     0,     4,    10,     0,     9,     7,     8,     0,
-       0,     0,     0,     0,     0,     0,     6,     0,     0,     0,
-       0,     5,     0,    11,     0,     0,    27,    15,    28,    23,
-      24,    25,    26,     0,     0,     0,     0,     0,     0,    12,
-       0,    32,     0,     0,     0,     0,     0,    16,    19,    33,
-      29,    30,    31,     0,     0,     3,    20,     0,     0,    17,
-       0,     3,     0,    18
+       3,     0,     2,     1,     0,     0,     0,    13,    14,    22,
+      23,    15,     0,     4,    10,     0,     9,     7,     8,     0,
+       0,     0,     0,     0,     3,     0,     6,     0,     0,     0,
+       0,     5,     0,    11,     0,     0,    28,     0,    29,    24,
+      25,    26,    27,     0,     0,     0,     0,     0,     0,    16,
+      12,     0,    33,     0,     0,     0,     0,     0,    17,    20,
+      34,    30,    31,    32,     0,     0,     3,    21,     0,     0,
+      18,     0,     3,     0,    19
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -42,   -42,   -11,    12,   -42,   -42,   -42,   -42,   -42,   -42,
-     -42,   -42,   -10,   -41
+     -25,   -25,   -24,    -1,   -25,   -25,   -25,   -25,   -25,   -25,
+     -25,   -25,   -25,   -11,    50
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     2,    13,    14,    15,    16,    17,    63,    70,
-      18,    64,    19,    48
+       0,     1,     2,    13,    14,    15,    16,    24,    17,    64,
+      71,    18,    65,    19,    48
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -638,38 +639,38 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      24,    32,    25,     3,    51,    53,    55,    56,    29,    30,
-      55,    56,    23,    36,    61,    62,    26,    39,    40,    41,
-      42,    33,    43,    57,    20,    47,     4,    59,     5,    45,
-      21,     6,    34,     9,    10,    47,    52,    22,     7,     8,
-       9,    10,    35,    46,    60,    47,    47,    44,    11,    37,
-      12,     4,    50,     5,    67,    58,     6,     4,    65,     5,
-      72,    69,     6,     7,     8,     9,    10,     9,    10,     7,
-       8,     9,    10,    11,    68,    12,    66,    12,    71,    11,
-      73,    12,     4,    54,     5,    55,    56,     6,     0,    27,
-      28,    29,    30,     0,     7,     8,     9,    10,     0,     0,
-       0,    54,     0,     0,    11,     0,    12,    27,    28,    29,
-      30,    27,    28,    29,    30,    38,     0,     0,     0,    38,
-      27,    28,    29,    30,    31,    27,    28,    29,    30,    49,
-      27,    28,    29,    30
+      37,    25,    32,    56,    57,     3,    56,    57,    27,    28,
+      29,    30,    36,    29,    30,    22,    39,    40,    41,    42,
+      58,    43,    33,    60,    47,    45,     9,    10,    20,     9,
+      10,    56,    57,    21,    47,    53,    12,    23,     4,    46,
+       5,    26,    68,     6,    61,    47,    47,    34,    73,    35,
+       7,     8,     9,    10,     4,    44,     5,    59,    70,     6,
+      11,    49,    12,    51,    67,    66,     7,     8,     9,    10,
+       4,    72,     5,     0,     0,     6,    11,    69,    12,     0,
+       0,     0,     7,     8,     9,    10,     4,     0,     5,     0,
+       0,     6,    11,    74,    12,    52,    54,     0,     7,     8,
+       9,    10,     0,     0,     0,    55,    62,    63,    11,    55,
+      12,    27,    28,    29,    30,    27,    28,    29,    30,    38,
+      27,    28,    29,    30,     0,     0,     0,     0,    38,    27,
+      28,    29,    30,    31,    27,    28,    29,    30,    50
 };
 
 static const yytype_int8 yycheck[] =
 {
-      11,     4,    12,     0,    45,    46,    11,    12,    22,    23,
-      11,    12,     4,    23,    55,    56,    24,    27,    28,    29,
-      30,    24,    32,    28,    17,    35,     3,    28,     5,    13,
-      17,     8,     6,    17,    18,    45,    46,     9,    15,    16,
-      17,    18,    27,    27,    54,    55,    56,    18,    25,    26,
-      27,     3,     7,     5,    65,    18,     8,     3,    25,     5,
-      71,    10,     8,    15,    16,    17,    18,    17,    18,    15,
-      16,    17,    18,    25,    26,    27,    64,    27,    25,    25,
-      26,    27,     3,    14,     5,    11,    12,     8,    -1,    20,
-      21,    22,    23,    -1,    15,    16,    17,    18,    -1,    -1,
-      -1,    14,    -1,    -1,    25,    -1,    27,    20,    21,    22,
-      23,    20,    21,    22,    23,    28,    -1,    -1,    -1,    28,
-      20,    21,    22,    23,    24,    20,    21,    22,    23,    24,
-      20,    21,    22,    23
+      24,    12,     4,    11,    12,     0,    11,    12,    20,    21,
+      22,    23,    23,    22,    23,     9,    27,    28,    29,    30,
+      28,    32,    24,    28,    35,    13,    17,    18,    17,    17,
+      18,    11,    12,    17,    45,    46,    27,     4,     3,    27,
+       5,    24,    66,     8,    55,    56,    57,     6,    72,    27,
+      15,    16,    17,    18,     3,    18,     5,    18,    10,     8,
+      25,    26,    27,     7,    65,    25,    15,    16,    17,    18,
+       3,    25,     5,    -1,    -1,     8,    25,    26,    27,    -1,
+      -1,    -1,    15,    16,    17,    18,     3,    -1,     5,    -1,
+      -1,     8,    25,    26,    27,    45,    46,    -1,    15,    16,
+      17,    18,    -1,    -1,    -1,    14,    56,    57,    25,    14,
+      27,    20,    21,    22,    23,    20,    21,    22,    23,    28,
+      20,    21,    22,    23,    -1,    -1,    -1,    -1,    28,    20,
+      21,    22,    23,    24,    20,    21,    22,    23,    24
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -677,31 +678,31 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,    30,    31,     0,     3,     5,     8,    15,    16,    17,
-      18,    25,    27,    32,    33,    34,    35,    36,    39,    41,
-      17,    17,     9,     4,    31,    41,    24,    20,    21,    22,
-      23,    24,     4,    24,     6,    27,    41,    26,    28,    41,
-      41,    41,    41,    41,    18,    13,    27,    41,    42,    24,
-       7,    42,    41,    42,    14,    11,    12,    28,    18,    28,
-      41,    42,    42,    37,    40,    25,    32,    31,    26,    10,
-      38,    25,    31,    26
+      18,    25,    27,    32,    33,    34,    35,    37,    40,    42,
+      17,    17,     9,     4,    36,    42,    24,    20,    21,    22,
+      23,    24,     4,    24,     6,    27,    42,    31,    28,    42,
+      42,    42,    42,    42,    18,    13,    27,    42,    43,    26,
+      24,     7,    43,    42,    43,    14,    11,    12,    28,    18,
+      28,    42,    43,    43,    38,    41,    25,    32,    31,    26,
+      10,    39,    25,    31,    26
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
        0,    29,    30,    31,    31,    32,    32,    32,    32,    32,
-      32,    33,    33,    34,    34,    35,    37,    38,    36,    40,
-      39,    41,    41,    41,    41,    41,    41,    41,    41,    42,
-      42,    42,    42,    42
+      32,    33,    33,    34,    34,    36,    35,    38,    39,    37,
+      41,    40,    42,    42,    42,    42,    42,    42,    42,    42,
+      43,    43,    43,    43,    43
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     0,     2,     2,     2,     1,     1,     1,
-       1,     3,     5,     1,     1,     3,     0,     0,    14,     0,
-       8,     1,     1,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     2,     3
+       1,     3,     5,     1,     1,     0,     4,     0,     0,    14,
+       0,     8,     1,     1,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     2,     3
 };
 
 
@@ -1167,55 +1168,55 @@ yyreduce:
   case 2: /* program: stmt_list  */
 #line 58 "mgk.y"
                    { debugBison(1); addReturnInstr(); }
-#line 1171 "mgk.tab.c"
+#line 1172 "mgk.tab.c"
     break;
 
   case 3: /* stmt_list: %empty  */
 #line 61 "mgk.y"
                        { (yyval.value) = nullptr; }
-#line 1177 "mgk.tab.c"
+#line 1178 "mgk.tab.c"
     break;
 
   case 4: /* stmt_list: stmt_list stmt  */
 #line 62 "mgk.y"
                           { debugBison(2); }
-#line 1183 "mgk.tab.c"
+#line 1184 "mgk.tab.c"
     break;
 
   case 5: /* stmt: expr ';'  */
 #line 65 "mgk.y"
                { debugBison(3); }
-#line 1189 "mgk.tab.c"
+#line 1190 "mgk.tab.c"
     break;
 
   case 6: /* stmt: reveal_stmt ';'  */
 #line 66 "mgk.y"
                       { debugBison(4); }
-#line 1195 "mgk.tab.c"
+#line 1196 "mgk.tab.c"
     break;
 
   case 7: /* stmt: if_stmt  */
 #line 67 "mgk.y"
               { debugBison(5); }
-#line 1201 "mgk.tab.c"
+#line 1202 "mgk.tab.c"
     break;
 
   case 8: /* stmt: whirl_loop  */
 #line 68 "mgk.y"
                  { debugBison(6); }
-#line 1207 "mgk.tab.c"
+#line 1208 "mgk.tab.c"
     break;
 
   case 9: /* stmt: block  */
 #line 69 "mgk.y"
             { debugBison(7); }
-#line 1213 "mgk.tab.c"
+#line 1214 "mgk.tab.c"
     break;
 
   case 10: /* stmt: decl_stmt  */
 #line 70 "mgk.y"
                 {debugBison(28);}
-#line 1219 "mgk.tab.c"
+#line 1220 "mgk.tab.c"
     break;
 
   case 11: /* decl_stmt: tok_summon tok_identifier ';'  */
@@ -1225,7 +1226,7 @@ yyreduce:
     declareVariable((yyvsp[-1].identifier));
     free((yyvsp[-1].identifier));
 }
-#line 1229 "mgk.tab.c"
+#line 1230 "mgk.tab.c"
     break;
 
   case 12: /* decl_stmt: tok_summon tok_identifier tok_colon expr ';'  */
@@ -1236,28 +1237,34 @@ yyreduce:
     setDouble((yyvsp[-3].identifier),(yyvsp[-1].value));
     free((yyvsp[-3].identifier));
 }
-#line 1240 "mgk.tab.c"
+#line 1241 "mgk.tab.c"
     break;
 
   case 13: /* reveal_stmt: tok_reveal_var  */
 #line 86 "mgk.y"
                    { debugBison(30); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); Value* val = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_reveal"); printDouble(val); free((yyvsp[0].identifier)); }
-#line 1246 "mgk.tab.c"
+#line 1247 "mgk.tab.c"
     break;
 
   case 14: /* reveal_stmt: tok_reveal_str  */
 #line 87 "mgk.y"
                      { debugBison(31); printString((yyvsp[0].string_literal)); free((yyvsp[0].string_literal)); }
-#line 1252 "mgk.tab.c"
+#line 1253 "mgk.tab.c"
     break;
 
-  case 15: /* block: '{' stmt_list '}'  */
+  case 15: /* $@1: %empty  */
 #line 90 "mgk.y"
-                         { debugBison(10); }
-#line 1258 "mgk.tab.c"
+          {pushScope(); debugBison(10);}
+#line 1259 "mgk.tab.c"
     break;
 
-  case 16: /* $@1: %empty  */
+  case 16: /* block: '{' $@1 stmt_list '}'  */
+#line 90 "mgk.y"
+                                                       {popScope(); debugBison(11); }
+#line 1265 "mgk.tab.c"
+    break;
+
+  case 17: /* $@2: %empty  */
 #line 95 "mgk.y"
    {
         Function* func = builder.GetInsertBlock()->getParent();
@@ -1271,28 +1278,28 @@ yyreduce:
 
 		builder.SetInsertPoint(thenBB);
 	}
-#line 1275 "mgk.tab.c"
+#line 1282 "mgk.tab.c"
     break;
 
-  case 17: /* $@2: %empty  */
+  case 18: /* $@3: %empty  */
 #line 108 "mgk.y"
         {
 		builder.CreateBr(mergeBB);
 		builder.SetInsertPoint(elseBB);
 	}
-#line 1284 "mgk.tab.c"
+#line 1291 "mgk.tab.c"
     break;
 
-  case 18: /* if_stmt: tok_cast tok_when '(' condition ')' $@1 '{' stmt_list '}' tok_otherwise $@2 '{' stmt_list '}'  */
+  case 19: /* if_stmt: tok_cast tok_when '(' condition ')' $@2 '{' stmt_list '}' tok_otherwise $@3 '{' stmt_list '}'  */
 #line 113 "mgk.y"
     {
 	    builder.CreateBr(mergeBB);
         builder.SetInsertPoint(mergeBB);
     }
-#line 1293 "mgk.tab.c"
+#line 1300 "mgk.tab.c"
     break;
 
-  case 19: /* $@3: %empty  */
+  case 20: /* $@4: %empty  */
 #line 122 "mgk.y"
     {
         debugBison(13);
@@ -1322,13 +1329,14 @@ yyreduce:
 
         // 3. Loop body
         builder.SetInsertPoint(loopBodyBB);
+        pushScope();
         
     }
-#line 1328 "mgk.tab.c"
+#line 1336 "mgk.tab.c"
     break;
 
-  case 20: /* whirl_loop: tok_whirl tok_identifier tok_from tok_double_literal tok_to tok_double_literal $@3 stmt  */
-#line 152 "mgk.y"
+  case 21: /* whirl_loop: tok_whirl tok_identifier tok_from tok_double_literal tok_to tok_double_literal $@4 stmt  */
+#line 153 "mgk.y"
     {
 
         builder.CreateBr(loopIncBB);
@@ -1344,90 +1352,91 @@ yyreduce:
 
         // 5. End of loop
         builder.SetInsertPoint(loopEndBB);
+        popScope();
     }
-#line 1349 "mgk.tab.c"
+#line 1358 "mgk.tab.c"
     break;
 
-  case 21: /* expr: tok_identifier  */
-#line 173 "mgk.y"
-                     { debugBison(14); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); (yyval.value) = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free((yyvsp[0].identifier)); }
-#line 1355 "mgk.tab.c"
-    break;
-
-  case 22: /* expr: tok_double_literal  */
-#line 174 "mgk.y"
-                         { debugBison(15); (yyval.value) = createDoubleConstant((yyvsp[0].double_literal)); }
-#line 1361 "mgk.tab.c"
-    break;
-
-  case 23: /* expr: expr '+' expr  */
+  case 22: /* expr: tok_identifier  */
 #line 175 "mgk.y"
-                    { debugBison(16); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '+'); }
-#line 1367 "mgk.tab.c"
+                     { debugBison(14); Value* ptr = getFromSymbolTable((yyvsp[0].identifier)); (yyval.value) = builder.CreateLoad(builder.getDoubleTy(), ptr, "load_identifier"); free((yyvsp[0].identifier)); }
+#line 1364 "mgk.tab.c"
     break;
 
-  case 24: /* expr: expr '-' expr  */
+  case 23: /* expr: tok_double_literal  */
 #line 176 "mgk.y"
-                    { debugBison(17); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '-'); }
-#line 1373 "mgk.tab.c"
+                         { debugBison(15); (yyval.value) = createDoubleConstant((yyvsp[0].double_literal)); }
+#line 1370 "mgk.tab.c"
     break;
 
-  case 25: /* expr: expr '*' expr  */
+  case 24: /* expr: expr '+' expr  */
 #line 177 "mgk.y"
-                    { debugBison(18); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '*'); }
-#line 1379 "mgk.tab.c"
+                    { debugBison(16); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '+'); }
+#line 1376 "mgk.tab.c"
     break;
 
-  case 26: /* expr: expr '/' expr  */
+  case 25: /* expr: expr '-' expr  */
 #line 178 "mgk.y"
-                    { debugBison(19); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '/'); }
-#line 1385 "mgk.tab.c"
+                    { debugBison(17); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '-'); }
+#line 1382 "mgk.tab.c"
     break;
 
-  case 27: /* expr: tok_identifier tok_colon expr  */
+  case 26: /* expr: expr '*' expr  */
 #line 179 "mgk.y"
-                                    { debugBison(20); setDouble((yyvsp[-2].identifier), (yyvsp[0].value)); free((yyvsp[-2].identifier)); (yyval.value) = (yyvsp[0].value); }
-#line 1391 "mgk.tab.c"
+                    { debugBison(18); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '*'); }
+#line 1388 "mgk.tab.c"
     break;
 
-  case 28: /* expr: '(' expr ')'  */
+  case 27: /* expr: expr '/' expr  */
 #line 180 "mgk.y"
+                    { debugBison(19); (yyval.value) = performBinaryOperation((yyvsp[-2].value), (yyvsp[0].value), '/'); }
+#line 1394 "mgk.tab.c"
+    break;
+
+  case 28: /* expr: tok_identifier tok_colon expr  */
+#line 181 "mgk.y"
+                                    { debugBison(20); setDouble((yyvsp[-2].identifier), (yyvsp[0].value)); free((yyvsp[-2].identifier)); (yyval.value) = (yyvsp[0].value); }
+#line 1400 "mgk.tab.c"
+    break;
+
+  case 29: /* expr: '(' expr ')'  */
+#line 182 "mgk.y"
                    { debugBison(21); (yyval.value) = (yyvsp[-1].value); }
-#line 1397 "mgk.tab.c"
+#line 1406 "mgk.tab.c"
     break;
 
-  case 29: /* condition: expr tok_relop expr  */
-#line 183 "mgk.y"
-                               { debugBison(22); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), (yyvsp[-1].op)); }
-#line 1403 "mgk.tab.c"
-    break;
-
-  case 30: /* condition: condition tok_and condition  */
-#line 184 "mgk.y"
-                                       { debugBison(23); (yyval.value) = builder.CreateAnd((yyvsp[-2].value), (yyvsp[0].value), "logical_and"); }
-#line 1409 "mgk.tab.c"
-    break;
-
-  case 31: /* condition: condition tok_or condition  */
+  case 30: /* condition: expr tok_relop expr  */
 #line 185 "mgk.y"
-                                      { debugBison(24); (yyval.value) = builder.CreateOr((yyvsp[-2].value), (yyvsp[0].value), "logical_or"); }
-#line 1415 "mgk.tab.c"
+                               { debugBison(22); (yyval.value) = createComparison((yyvsp[-2].value), (yyvsp[0].value), (yyvsp[-1].op)); }
+#line 1412 "mgk.tab.c"
     break;
 
-  case 32: /* condition: tok_not condition  */
+  case 31: /* condition: condition tok_and condition  */
 #line 186 "mgk.y"
-                             {debugBison(26); (yyval.value)=createLogicalNot((yyvsp[0].value));}
-#line 1421 "mgk.tab.c"
+                                       { debugBison(23); (yyval.value) = builder.CreateAnd((yyvsp[-2].value), (yyvsp[0].value), "logical_and"); }
+#line 1418 "mgk.tab.c"
     break;
 
-  case 33: /* condition: '(' condition ')'  */
+  case 32: /* condition: condition tok_or condition  */
 #line 187 "mgk.y"
+                                      { debugBison(24); (yyval.value) = builder.CreateOr((yyvsp[-2].value), (yyvsp[0].value), "logical_or"); }
+#line 1424 "mgk.tab.c"
+    break;
+
+  case 33: /* condition: tok_not condition  */
+#line 188 "mgk.y"
+                             {debugBison(26); (yyval.value)=createLogicalNot((yyvsp[0].value));}
+#line 1430 "mgk.tab.c"
+    break;
+
+  case 34: /* condition: '(' condition ')'  */
+#line 189 "mgk.y"
                              { debugBison(25); (yyval.value) = (yyvsp[-1].value); }
-#line 1427 "mgk.tab.c"
+#line 1436 "mgk.tab.c"
     break;
 
 
-#line 1431 "mgk.tab.c"
+#line 1440 "mgk.tab.c"
 
       default: break;
     }
@@ -1620,7 +1629,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 190 "mgk.y"
+#line 192 "mgk.y"
 
 
 void yyerror(const char *s) {
