@@ -36,7 +36,7 @@ reveal** Magic activated! **
 Magik uses the `cast when` keyword for conditional logic:
 
 ```magik
-cast when myvariable > 30:
+cast when myvariable beyond 30:
   reveal** Power surge! **
 ```
 
